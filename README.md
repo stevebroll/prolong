@@ -1,1 +1,1 @@
-prolong
+`prolong` is an implenetation of PROLONG, a method designed for regressing a longitudinal phenotype on longitudinal omics data. PROLONG leverages the first differences of the data to address the piecewise linear structure and the observed time dependence, using a Laplacian network constraint to incorporate the correlation structure of the predictors, and a group lasso constraint induces sparsity while grouping metabolites across their first differenced observations.
