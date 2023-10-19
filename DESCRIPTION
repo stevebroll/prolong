@@ -1,0 +1,10 @@
+Package: prolong
+Type: Package
+Title: Penalized Regression on Longitudinal Omics Data with Network and Group lasso constraints
+Version: 0.1.0
+Author: Steve Broll
+Maintainer: Steve Broll <sb2643@cornell.edu>
+Description: 
+License: use_gpl_license(version = 3, include_future = TRUE)
+Encoding: UTF-8
+LazyData: false
