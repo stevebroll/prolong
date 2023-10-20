@@ -4,7 +4,7 @@ Title: Penalized Regression on Longitudinal Omics Data with Network and Group la
 Version: 0.1.0
 Author: Steve Broll
 Maintainer: Steve Broll <sb2643@cornell.edu>
-Description: 
+Description: The prolong package is primarily designed to fit penalized models for longitudinal omics variables and a longitudinal clinical outcome. The package also includes plotting functions and a corresponding shiny app to facilitate visualization of the correlation structures of the omics variables
 License: use_gpl_license(version = 3, include_future = TRUE)
 Encoding: UTF-8
 LazyData: false
