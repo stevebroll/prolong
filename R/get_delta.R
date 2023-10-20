@@ -1,21 +1,22 @@
-get_delta_X <- function(X, t, n, p) {
+get_delta_X <- function(X, n, p, t) {
   DXarray <- array(0, dim = c(n, p, t - 1))
   for (k in 1:(t - 1)) {
-    DXarray[, , k] <- scale(t(X[, , k + 1]) - t(X[, , k]), center = F) / sqrt(n - 1)
+    DXarray[, , k] <-
+      scale(t(X[, , k + 1]) - t(X[, , k]), center = F) / sqrt(n - 1)
   }
 
   DX <- matrix(0, nrow = n * (t - 1), ncol = sum(1:(t - 1)) * p)
-  rowvec = 1:n
+  rowvec <- 1:n
   colvec <- 1:p
-  for(i in 1:(t-1)){
-    for(j in 1:i){
-      DX[rowvec, colvec] = DXarray[,,j]
-      colvec = colvec + p
+  for (i in 1:(t - 1)) {
+    for (j in 1:i) {
+      DX[rowvec, colvec] <- DXarray[, , j]
+      colvec <- colvec + p
     }
-    rowvec = rowvec + n
+    rowvec <- rowvec + n
   }
 
-  return(DX)
+  return(list('DX' = DX, 'DXarray' = DXarray))
 }
 
 
