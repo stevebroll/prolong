@@ -101,6 +101,7 @@ prolong <-
       opt <- stats::optim(c(1, 1), minfun)
       lambda2 <- opt$par[1]
       lambdar <- opt$par[2]
+      print(paste('Lambda2 = ',lambda2, '\nLambdaR = ', lambdar, sep = ''))
     }
 
     # get incidence matrix
