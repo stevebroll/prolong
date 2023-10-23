@@ -10,3 +10,4 @@ Encoding: UTF-8
 LazyData: false
 URL: https://github.com/stevebroll/prolong
 BugReports: https://github.com/stevebroll/prolong/issues
+RoxygenNote: 7.2.3
