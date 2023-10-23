@@ -4,15 +4,15 @@ prolong <-
            lambda1 = NULL,
            lambda2 = NULL,
            lambdar = NULL,
-           groups = NULL) {
+           groups = TRUE) {
     if (nrow(Y) != nrow(X))
       stop("Incompatible dimensions for X and Y, X and Y should have same # rows, 1 for each sample")
     if (ncol(Y) != dim(X)[3])
       stop(
         "Incompatible dimensions for X and Y, Y should have t columns the third component of dim(X) should also be t"
       )
-    if (is.null(groups))
-      message("No groups supplied, ordinary lasso will be used instead of group lasso")
+    if (is.null(groups) | isFALSE(groups))
+      message("No groups supplied r suggested, ordinary lasso will be used instead of group lasso")
     if (!is.null(groups) &
         groups != sort(groups))
       stop(
@@ -54,12 +54,41 @@ prolong <-
                                                                              Q + diag(l[2], nrow(Q))
                                                                            ))))
       }
-      opt = optim(c(1, 0.1), minfun)
-      print(opt)
+      opt <- optim(c(1, 1), minfun)
       lambda2 = opt$par[1]
       lambdar = opt$par[2]
     }
 
+    # get incidence matrix
+    LDL <- fastmatrix::ldl(lap + diag(lambdar, nrow = nrow(Q)))
+    incidence <- LDL$lower %*% diag(sqrt(abs(LDL$d)))
 
+    tri <- t*(t-1)/2
+    Xaug <- (1/sqrt(1 + lambda2))*rbind(Xcomb, sqrt(lambda2) *t(incidence))
+    Xaug <- Xaug[,rep((1:p),each = tri) + rep(seq(0,p*(tri-1),p),p)]
+    Yaug <- c(Ycomb, rep(0, nrow(Xaug) - (t-1)*n))
+
+    foldids <- c(rep(caret::createFolds(1:n,5, list = F),(t-1)))
+
+    if(is.null(groups) | isFALSE(groups)){
+      NULL
+
+    } else {
+      if(isTRUE(groups)){
+        groups = rep(1:p, each = tri)
+      }
+      cv = gglasso::cv.gglasso(Xaug, Yaug, intercept = F, group = groups, foldid = foldids)
+      gllmod = gglasso(Xaug, Yaug, intercept = F, group = groups, lambda = cv$lambda.1se)
+      coefs = coef(gllmod)[-1,]
+      coefs = coefs/(sqrt(1 + lambda2))
+      names(coefs) = rep(colnames(DXout$DXarray), each = tri)
+
+
+    }
+
+
+
+
+    return(coefs)
 
   }
