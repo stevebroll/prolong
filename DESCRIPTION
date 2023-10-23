@@ -12,4 +12,5 @@ Imports: caret, fastmatrix, gglasso, igraph, Rdpack (>= 0.7)
 RdMacros: Rdpack
 URL: https://github.com/stevebroll/prolong, https://stevebroll.github.io/prolong/
 BugReports: https://github.com/stevebroll/prolong/issues
+Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3

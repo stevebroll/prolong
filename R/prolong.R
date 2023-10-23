@@ -1,25 +1,25 @@
-#' Title
+#' Fit prolong Model to Data
 #'
 #' @param Y Input response matrix, with n rows and t columns
 #' @param X Input covariate array, with n rows, p columns, and t slices
-#' @param lambda1 Lasso/group lasso parameter, if left NULL will be chosen via a
-#'  cross-validation that keeps each subject's observations across time points
-#'  together. It is recommended to save the lambda2 and lambdar values from the
-#'  first run of prolong for future runs, since the optimization step takes the
-#'  longest
-#' @param lambda2 Laplacian penalty parameter, if left NULL will be chosen along
+#' @param lambda1 Lasso/group lasso parameter, if left `NULL` this parameter
+#' will be chosen via a cross-validation that keeps each subject's observations
+#' across time points together. It is recommended to save the lambda2 and
+#' lambdar values from the first run of prolong for future runs, since the
+#' optimization step takes the longest
+#' @param lambda2 Laplacian penalty parameter, if left `NULL` will be chosen along
 #'  with lambdar via MLE, see supplementary material in
 #'  \insertCite{spatialconnectivity}{prolong}
-#' @param lambdar Nuisance parameter, if left NULL will be chosen along with
+#' @param lambdar Nuisance parameter, if left `NULL` will be chosen along with
 #'  lambdar via MLE. Added to the the diagonal elements of the laplacian matrix
 #'   to get the invertibility required for the MLE
-#' @param groups Optional pre-specified groups. If NULL or FALSE, lasso will be
-#'  used. If left as TRUE, then there will be p groups each containing the
+#' @param groups Optional pre-specified groups. If `NULL` or `FALSE`, lasso will be
+#'  used. If left as `TRUE`, then there will be p groups each containing the
 #'   observations across time points
 #' @param foldids Optional pre-specified foldids for the cv. Should be of length
-#'  n. If left NULL, subjects will be automatically split into 5 folds
-#' @param optimvals Initial values of lambda2 and lambdar to be used by optim()
-#' for the MLE of lambda2 and lambdar
+#'  n. If left `NULL`, subjects will be automatically split into 5 folds
+#' @param optimvals Initial values of lambda2 and lambdar to be used by
+#' `optim()` for the MLE of lambda2 and lambdar
 #'
 #' @return A named numeric vector of coefficients from the lasso or group lasso
 #' @export
