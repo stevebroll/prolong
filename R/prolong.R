@@ -13,20 +13,21 @@
 #'  lambdar via MLE. Added to the the diagonal elements of the laplacian matrix
 #'   to get the invertibility required for the MLE
 #' @param groups Optional pre-specified groups. If NULL or FALSE, lasso will be
-#'  used. If left as TRUE, the there will be p groups each containing the
+#'  used. If left as TRUE, then there will be p groups each containing the
 #'   observations across time points
+#' @param foldids Optional pre-specified foldids for the cv. Should be of length
+#'  n. If left NULL, subjects will be automatically split into 5 folds
 #'
 #' @return A named numeric vector of coefficients from the lasso or group lasso
 #' @export
 #'
 #' @examples
 #' \donttest{
-#' coefs = prolong(Ymatrix, Xarray)
+#' coefs <- prolong(Ymatrix, Xarray)
 #' coefs
 #'
-#' coefs = prolong(Ymatrix, Xarray, lambda2 = .001, lambdar = 10, groups = )
+#' coefs <- prolong(Ymatrix, Xarray, lambda2 = .001, lambdar = 10, groups = )
 #' coefs
-
 #' }
 prolong <-
   function(Y,
@@ -34,7 +35,8 @@ prolong <-
            lambda1 = NULL,
            lambda2 = NULL,
            lambdar = NULL,
-           groups = TRUE) {
+           groups = TRUE,
+           foldids = NULL) {
     if (nrow(Y) != nrow(X)) {
       stop("Incompatible dimensions for X and Y, X and Y should have same #
            rows, 1 for each sample")
@@ -112,7 +114,11 @@ prolong <-
       Xaug[, rep((1:p), each = tri) + rep(seq(0, p * (tri - 1), p), p)]
     Yaug <- c(Ycomb, rep(0, nrow(Xaug) - (t - 1) * n))
 
-    foldids <- c(rep(caret::createFolds(1:n, 5, list = F), (t - 1)))
+    if (!is.null(foldids)) {
+      foldids <- rep(foldids, (t - 1))
+    } else {
+      foldids <- c(rep(caret::createFolds(1:n, 5, list = F), (t - 1)))
+    }
 
     if (is.null(groups) | isFALSE(groups)) {
       NULL
