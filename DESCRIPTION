@@ -8,7 +8,8 @@ Description: The prolong package is primarily designed to fit penalized models f
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: false
-Imports: caret, fastmatrix, gglasso, igraph
+Imports: caret, fastmatrix, gglasso, igraph, Rdpack (>= 0.7)
+RdMacros: Rdpack
 URL: https://github.com/stevebroll/prolong, https://stevebroll.github.io/prolong/
 BugReports: https://github.com/stevebroll/prolong/issues
 RoxygenNote: 7.2.3

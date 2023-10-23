@@ -27,7 +27,8 @@ first run of prolong for future runs, since the optimization step takes the
 longest}
 
 \item{lambda2}{Laplacian penalty parameter, if left NULL will be chosen along
-with lambdar via MLE}
+with lambdar via MLE, see supplementary material in
+\insertCite{spatialconnectivity}{prolong}}
 
 \item{lambdar}{Nuisance parameter, if left NULL will be chosen along with
 lambdar via MLE. Added to the the diagonal elements of the laplacian matrix
@@ -57,4 +58,8 @@ coefs
 coefs <- prolong(Ymatrix, Xarray, lambda2 = .001, lambdar = 10, groups = )
 coefs
 }
+
+}
+\references{
+\insertAllCited{}
 }

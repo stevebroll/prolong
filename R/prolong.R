@@ -8,7 +8,8 @@
 #'  first run of prolong for future runs, since the optimization step takes the
 #'  longest
 #' @param lambda2 Laplacian penalty parameter, if left NULL will be chosen along
-#'  with lambdar via MLE
+#'  with lambdar via MLE, see supplementary material in
+#'  \insertCite{spatialconnectivity}{prolong}
 #' @param lambdar Nuisance parameter, if left NULL will be chosen along with
 #'  lambdar via MLE. Added to the the diagonal elements of the laplacian matrix
 #'   to get the invertibility required for the MLE
@@ -23,6 +24,8 @@
 #' @return A named numeric vector of coefficients from the lasso or group lasso
 #' @export
 #'
+#' @importFrom Rdpack reprompt
+#'
 #' @examples
 #' \dontrun{
 #' coefs <- prolong(Ymatrix, Xarray)
@@ -31,6 +34,9 @@
 #' coefs <- prolong(Ymatrix, Xarray, lambda2 = .001, lambdar = 10, groups = )
 #' coefs
 #' }
+#'
+#' @references
+#' \insertAllCited{}
 prolong <-
   function(Y,
            X,
