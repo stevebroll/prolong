@@ -11,7 +11,8 @@ prolong(
   lambda2 = NULL,
   lambdar = NULL,
   groups = TRUE,
-  foldids = NULL
+  foldids = NULL,
+  optimvals = c(1, 0.01)
 )
 }
 \arguments{
@@ -38,6 +39,9 @@ used. If left as TRUE, then there will be p groups each containing the
 
 \item{foldids}{Optional pre-specified foldids for the cv. Should be of length
 n. If left NULL, subjects will be automatically split into 5 folds}
+
+\item{optimvals}{Initial values of lambda2 and lambdar to be used by optim()
+for the MLE of lambda2 and lambdar}
 }
 \value{
 A named numeric vector of coefficients from the lasso or group lasso
