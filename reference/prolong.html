@@ -58,7 +58,8 @@
 <span>  lambda2 <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  lambdar <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  groups <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  foldids <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  foldids <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  optimvals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.01</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -100,6 +101,11 @@ used. If left as TRUE, then there will be p groups each containing the
 <dt>foldids</dt>
 <dd><p>Optional pre-specified foldids for the cv. Should be of length
 n. If left NULL, subjects will be automatically split into 5 folds</p></dd>
+
+
+<dt>optimvals</dt>
+<dd><p>Initial values of lambda2 and lambdar to be used by optim()
+for the MLE of lambda2 and lambdar</p></dd>
 
 </dl></div>
     <div class="section level2">
