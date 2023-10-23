@@ -17,6 +17,8 @@
 #'   observations across time points
 #' @param foldids Optional pre-specified foldids for the cv. Should be of length
 #'  n. If left NULL, subjects will be automatically split into 5 folds
+#' @param optimvals Initial values of lambda2 and lambdar to be used by optim()
+#' for the MLE of lambda2 and lambdar
 #'
 #' @return A named numeric vector of coefficients from the lasso or group lasso
 #' @export
@@ -36,7 +38,8 @@ prolong <-
            lambda2 = NULL,
            lambdar = NULL,
            groups = TRUE,
-           foldids = NULL) {
+           foldids = NULL,
+           optimvals = c(1, 0.01)) {
     if (nrow(Y) != nrow(X)) {
       stop("Incompatible dimensions for X and Y, X and Y should have same #
            rows, 1 for each sample")
@@ -98,7 +101,7 @@ prolong <-
               lap + diag(l[2], nrow(lap))
             ))))
       }
-      opt <- stats::optim(c(1, 1), minfun)
+      opt <- stats::optim(optimvals, minfun)
       lambda2 <- opt$par[1]
       lambdar <- opt$par[2]
       print(paste('Lambda2 = ',lambda2, '\nLambdaR = ', lambdar, sep = ''))
