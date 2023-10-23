@@ -9,5 +9,5 @@ get_cor_matrix <- function(DXarray, n, p, t) {
     }
     cormat[colvec, colvec] = cor(DXtemp)
   }
-  return(cormat)
+  return(abs(cormat))
 }
