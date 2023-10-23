@@ -83,7 +83,8 @@ longest</p></dd>
 
 <dt>lambda2</dt>
 <dd><p>Laplacian penalty parameter, if left NULL will be chosen along
-with lambdar via MLE</p></dd>
+with lambdar via MLE, see supplementary material in
+(Steiner et al. 2022)</p></dd>
 
 
 <dt>lambdar</dt>
@@ -114,6 +115,14 @@ for the MLE of lambda2 and lambdar</p></dd>
 
 <p>A named numeric vector of coefficients from the lasso or group lasso</p>
     </div>
+    <div class="section level2">
+    <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
+    <p>Steiner A, Abbas K, Brzyski D, Pączek K, Randolph TW, Goñi J, Harezlak J (2022).
+“Incorporation of spatial- and connectivity-based cortical brain region information in regularized regression: Application to Human Connectome Project data.”
+<em>Frontiers in Neuroscience</em>, <b>16</b>.
+ISSN 1662-453X, <a href="https://doi.org/10.3389/fnins.2022.957282" class="external-link">doi:10.3389/fnins.2022.957282</a>
+, <a href="https://www.frontiersin.org/articles/10.3389/fnins.2022.957282" class="external-link">https://www.frontiersin.org/articles/10.3389/fnins.2022.957282</a>.</p>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
@@ -124,6 +133,7 @@ for the MLE of lambda2 and lambdar</p></dd>
 <span class="r-in"><span><span class="va">coefs</span> <span class="op">&lt;-</span> <span class="fu">prolong</span><span class="op">(</span><span class="va">Ymatrix</span>, <span class="va">Xarray</span>, lambda2 <span class="op">=</span> <span class="fl">.001</span>, lambdar <span class="op">=</span> <span class="fl">10</span>, groups <span class="op">=</span> <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">coefs</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
