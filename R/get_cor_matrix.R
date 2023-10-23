@@ -7,7 +7,7 @@ get_cor_matrix <- function(DXarray, n, p, t) {
     for (j in 1:i) {
       DXtemp = cbind(DXtemp, DXarray[, , j])
     }
-    cormat[colvec, colvec] = cor(DXtemp)
+    cormat[colvec, colvec] = stats::cor(DXtemp)
   }
   return(abs(cormat))
 }

@@ -22,7 +22,7 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' coefs <- prolong(Ymatrix, Xarray)
 #' coefs
 #'
@@ -80,39 +80,39 @@ prolong <-
       message("lambda2 and/or lambdar missing, optimizing over both")
       ZTZ <- crossprod(DXout$DX)
       ZTY <- crossprod(DXout$DX, DY)
-      YZT <- crossprod(DY, DXout$DX)
+      YTZ <- crossprod(DY, DXout$DX)
 
       minfun <- function(l) {
-        n * log(crossprod(Y, Y) - YTZ %*% solve(abs(l[1]) *
-          (Q + diag(l[2], nrow(
-            Q
+        n * log(crossprod(DY, DY) - YTZ %*% solve(abs(l[1]) *
+          (lap + diag(l[2], nrow(
+            lap
           )))
           + ZTZ) %*% ZTY) + log(abs(det(abs(l[1]) *
           (
-            Q + diag(l[2], nrow(Q))
+            lap + diag(l[2], nrow(lap))
           )
-          + crossprod(Z, Z)))) -
+          + ZTZ))) -
           log(abs(det(abs(l[1]) *
 
             (
-              Q + diag(l[2], nrow(Q))
+              lap + diag(l[2], nrow(lap))
             ))))
       }
-      opt <- optim(c(1, 1), minfun)
+      opt <- stats::optim(c(1, 1), minfun)
       lambda2 <- opt$par[1]
       lambdar <- opt$par[2]
     }
 
     # get incidence matrix
-    LDL <- fastmatrix::ldl(lap + diag(lambdar, nrow = nrow(Q)))
+    LDL <- fastmatrix::ldl(lap + diag(lambdar, nrow = nrow(lap)))
     incidence <- LDL$lower %*% diag(sqrt(abs(LDL$d)))
 
     tri <- t * (t - 1) / 2
     Xaug <-
-      (1 / sqrt(1 + lambda2)) * rbind(Xcomb, sqrt(lambda2) * t(incidence))
+      (1 / sqrt(1 + lambda2)) * rbind(DXout$DX, sqrt(lambda2) * t(incidence))
     Xaug <-
       Xaug[, rep((1:p), each = tri) + rep(seq(0, p * (tri - 1), p), p)]
-    Yaug <- c(Ycomb, rep(0, nrow(Xaug) - (t - 1) * n))
+    Yaug <- c(DY, rep(0, nrow(Xaug) - (t - 1) * n))
 
     if (!is.null(foldids)) {
       foldids <- rep(foldids, (t - 1))
@@ -133,14 +133,14 @@ prolong <-
         group = groups,
         foldid = foldids
       )
-      gllmod <- gglasso(
+      gllmod <- gglasso::gglasso(
         Xaug,
         Yaug,
         intercept = F,
         group = groups,
         lambda = cv$lambda.1se
       )
-      coefs <- coef(gllmod)[-1, ]
+      coefs <- stats::coef(gllmod)[-1, ]
       coefs <- coefs / (sqrt(1 + lambda2))
       names(coefs) <- rep(colnames(DXout$DXarray), each = tri)
     }

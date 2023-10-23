@@ -4,7 +4,15 @@
 \alias{prolong}
 \title{Title}
 \usage{
-prolong(Y, X, lambda1 = NULL, lambda2 = NULL, lambdar = NULL, groups = TRUE)
+prolong(
+  Y,
+  X,
+  lambda1 = NULL,
+  lambda2 = NULL,
+  lambdar = NULL,
+  groups = TRUE,
+  foldids = NULL
+)
 }
 \arguments{
 \item{Y}{Input response matrix, with n rows and t columns}
@@ -25,8 +33,11 @@ lambdar via MLE. Added to the the diagonal elements of the laplacian matrix
  to get the invertibility required for the MLE}
 
 \item{groups}{Optional pre-specified groups. If NULL or FALSE, lasso will be
-used. If left as TRUE, the there will be p groups each containing the
+used. If left as TRUE, then there will be p groups each containing the
  observations across time points}
+
+\item{foldids}{Optional pre-specified foldids for the cv. Should be of length
+n. If left NULL, subjects will be automatically split into 5 folds}
 }
 \value{
 A named numeric vector of coefficients from the lasso or group lasso
@@ -35,11 +46,11 @@ A named numeric vector of coefficients from the lasso or group lasso
 Title
 }
 \examples{
-\donttest{
-coefs = prolong(Ymatrix, Xarray)
+\dontrun{
+coefs <- prolong(Ymatrix, Xarray)
 coefs
 
-coefs = prolong(Ymatrix, Xarray, lambda2 = .001, lambdar = 10, groups = )
+coefs <- prolong(Ymatrix, Xarray, lambda2 = .001, lambdar = 10, groups = )
 coefs
 }
 }
