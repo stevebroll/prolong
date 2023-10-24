@@ -75,4 +75,6 @@ coefs
 }
 \references{
 \insertAllCited{}
+\insertRef{gglasso}{prolong}
+\insertRef{group-lasso}{prolong}
 }

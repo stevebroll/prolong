@@ -1,3 +1,20 @@
+@article{gglasso,
+	author = {Yang, Yi and Zou, Hui},
+	title = "{A fast unified algorithm for solving group-lasso penalize learning problems}",
+	volume = {25},
+	issn = {1573-1375},
+	url = {https://doi.org/10.1007/s11222-014-9498-5},
+	doi = {10.1007/s11222-014-9498-5},
+	abstract = {This paper concerns a class of group-lasso learning problems where the objective function is the sum of an empirical loss and the group-lasso penalty. For a class of loss function satisfying a quadratic majorization condition, we derive a unified algorithm called groupwise-majorization-descent (GMD) for efficiently computing the solution paths of the corresponding group-lasso penalized learning problem. GMD allows for general design matrices, without requiring the predictors to be group-wise orthonormal. As illustration examples, we develop concrete algorithms for solving the group-lasso penalized least squares and several group-lasso penalized large margin classifiers. These group-lasso models have been implemented in an R package gglasso publicly available from the Comprehensive R Archive Network (CRAN) at http://cran.r-project.org/web/packages/gglasso. On simulated and real data, gglasso consistently outperforms the existing software for computing the group-lasso that implements either the classical groupwise descent algorithm or Nesterov’s method.},
+	language = {en},
+	number = {6},
+	urldate = {2022-09-06},
+	journal = {Statistics and Computing},
+	month = nov,
+	year = {2015},
+	keywords = {Group lasso, Groupwise descent, grplasso, Large margin classifiers, MM principle, SLEP},
+	pages = {1129--1141},
+}
 @article{lasso-laplacian,
     author = {Li, Caiyan and Li, Hongzhe},
     title = "{Network-constrained regularization and variable selection for analysis of genomic data}",
@@ -13,24 +30,29 @@
     url = {https://doi.org/10.1093/bioinformatics/btn081},
     eprint = {https://academic.oup.com/bioinformatics/article-pdf/24/9/1175/49048209/bioinformatics\_24\_9\_1175.pdf},
 }
-
-@article{spatialconnectivity,
+@article{spatial-connectivity,
 AUTHOR={Steiner, Aleksandra and Abbas, Kausar and Brzyski, Damian and Pączek, Kewin and Randolph, Timothy W. and Goñi, Joaquín and Harezlak, Jaroslaw},
-
 TITLE={Incorporation of spatial- and connectivity-based cortical brain region information in regularized regression: Application to Human Connectome Project data},
-
 JOURNAL={Frontiers in Neuroscience},
-
 VOLUME={16},
-
 YEAR={2022},
-
 URL={https://www.frontiersin.org/articles/10.3389/fnins.2022.957282},
-
 DOI={10.3389/fnins.2022.957282},
-
 ISSN={1662-453X},
-
 ABSTRACT={Studying the association of the brain's structure and function with neurocognitive outcomes requires a comprehensive analysis that combines different sources of information from a number of brain-imaging modalities. Recently developed regularization methods provide a novel approach using information about brain structure to improve the estimation of coefficients in the linear regression models. Our proposed method, which is a special case of the Tikhonov regularization, incorporates structural connectivity derived with Diffusion Weighted Imaging and cortical distance information in the penalty term. Corresponding to previously developed methods that inform the estimation of the regression coefficients, we incorporate additional information via a Laplacian matrix based on the proximity measure on the cortical surface. Our contribution consists of constructing a principled formulation of the penalty term and testing the performance of the proposed approach via extensive simulation studies and a brain-imaging application. The penalty term is constructed as a weighted combination of structural connectivity and proximity between cortical areas. Simulation studies mimic the real brain-imaging settings. We apply our approach to the study of data collected in the Human Connectome Project, where the cortical properties of the left hemisphere are found to be associated with vocabulary comprehension.}
 }
-
+@article{group-lasso,
+    author = {Yuan, Ming and Lin, Yi},
+    title = "{Model Selection and Estimation in Regression with Grouped Variables}",
+    journal = {Journal of the Royal Statistical Society Series B: Statistical Methodology},
+    volume = {68},
+    number = {1},
+    pages = {49-67},
+    year = {2005},
+    month = {12},
+    abstract = "{We consider the problem of selecting grouped variables (factors) for accurate prediction in regression. Such a problem arises naturally in many practical situations with the multifactor analysis-of-variance problem as the most important and well-known example. Instead of selecting factors by stepwise backward elimination, we focus on the accuracy of estimation and consider extensions of the lasso, the LARS algorithm and the non-negative garrotte for factor selection. The lasso, the LARS algorithm and the non-negative garrotte are recently proposed regression methods that can be used to select individual variables. We study and propose efficient algorithms for the extensions of these methods for factor selection and show that these extensions give superior performance to the traditional stepwise backward elimination method in factor selection problems. We study the similarities and the differences between these methods. Simulations and real examples are used to illustrate the methods.}",
+    issn = {1369-7412},
+    doi = {10.1111/j.1467-9868.2005.00532.x},
+    url = {https://doi.org/10.1111/j.1467-9868.2005.00532.x},
+    eprint = {https://academic.oup.com/jrsssb/article-pdf/68/1/49/49794691/jrsssb\_68\_1\_49.pdf}
+}

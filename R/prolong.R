@@ -17,7 +17,6 @@
 #' Lastly, a group lasso + laplacian or lasso + laplacian model is implemented,
 #' and its bias-adjusted coefficients are returned.
 #'
-#'
 #' @param Y Input response matrix, with n rows and t columns
 #' @param X Input covariate array, with n rows, p columns, and t slices
 #' @param lambda1 Lasso/group lasso parameter, if left `NULL` this parameter
@@ -39,6 +38,8 @@
 #' @param optimvals Initial values of lambda2 and lambdar to be used by
 #' `optim()` for the MLE of lambda2 and lambdar
 #'
+#'
+#'
 #' @return A named numeric vector of coefficients from the lasso or group lasso
 #' @export
 #'
@@ -55,6 +56,9 @@
 #'
 #' @references
 #' \insertAllCited{}
+#' \insertRef{gglasso}{prolong}
+#' \insertRef{group-lasso}{prolong}
+#'
 prolong <-
   function(Y,
            X,
