@@ -1,4 +1,22 @@
-#' Fit prolong Model to Data
+#' Fit prolong Model
+#'
+#' @description
+#'
+#' `prolong()` is designed to take an \eqn{n \times t} outcome matrix and an
+#' \eqn{n \times p \times t} array of covariates and automatically run the
+#' entire processing and model fitting process, returning a list of coefficients
+#' with corresponding variable names.
+#'
+#' @details
+#' First, the data is reshaped into the first-differenced vectorized
+#' \eqn{n(t-1)} length Y and first-differenced matricized \eqn{n(t-1) \times
+#' pt(t-1)/2} X with a corresponding dependence matrix.
+#' Next, hyperparameters for the graph laplacian-based network
+#' penalty are found via MLE and the parameter for lasso/group lasso is found
+#' via a careful implementation of cross-validation.
+#' Lastly, a group lasso + laplacian or lasso + laplacian model is implemented,
+#' and its bias-adjusted coefficients are returned.
+#'
 #'
 #' @param Y Input response matrix, with n rows and t columns
 #' @param X Input covariate array, with n rows, p columns, and t slices
@@ -9,7 +27,7 @@
 #' optimization step takes the longest
 #' @param lambda2 Laplacian penalty parameter, if left `NULL` will be chosen along
 #'  with lambdar via MLE, see supplementary material in
-#'  \insertCite{spatialconnectivity}{prolong}
+#'  \insertCite{spatial-connectivity}{prolong}
 #' @param lambdar Nuisance parameter, if left `NULL` will be chosen along with
 #'  lambdar via MLE. Added to the the diagonal elements of the laplacian matrix
 #'   to get the invertibility required for the MLE
@@ -110,7 +128,7 @@ prolong <-
       opt <- stats::optim(optimvals, minfun)
       lambda2 <- opt$par[1]
       lambdar <- opt$par[2]
-      print(paste('Lambda2 = ',lambda2, '\nLambdaR = ', lambdar, sep = ''))
+      print(paste("Lambda2 = ", lambda2, "\nLambdaR = ", lambdar, sep = ""))
     }
 
     # get incidence matrix
@@ -136,12 +154,19 @@ prolong <-
       if (isTRUE(groups)) {
         groups <- rep(1:p, each = tri)
       }
-      cv <- gglasso::cv.gglasso(
+      # cv <- gglasso::cv.gglasso(
+      #   Xaug,
+      #   Yaug,
+      #   intercept = F,
+      #   group = groups,
+      #   foldid = foldids
+      # )
+      cv <- cv.gglasso_prolong(
         Xaug,
         Yaug,
-        intercept = F,
         group = groups,
-        foldid = foldids
+        foldid = foldids,
+        pred.loss = "L2"
       )
       gllmod <- gglasso::gglasso(
         Xaug,
@@ -154,9 +179,6 @@ prolong <-
       coefs <- coefs / (sqrt(1 + lambda2))
       names(coefs) <- rep(colnames(DXout$DXarray), each = tri)
     }
-
-
-
 
     return(coefs)
   }

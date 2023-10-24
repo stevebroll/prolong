@@ -2,7 +2,7 @@
 % Please edit documentation in R/prolong.R
 \name{prolong}
 \alias{prolong}
-\title{Fit prolong Model to Data}
+\title{Fit prolong Model}
 \usage{
 prolong(
   Y,
@@ -28,7 +28,7 @@ optimization step takes the longest}
 
 \item{lambda2}{Laplacian penalty parameter, if left \code{NULL} will be chosen along
 with lambdar via MLE, see supplementary material in
-\insertCite{spatialconnectivity}{prolong}}
+\insertCite{spatial-connectivity}{prolong}}
 
 \item{lambdar}{Nuisance parameter, if left \code{NULL} will be chosen along with
 lambdar via MLE. Added to the the diagonal elements of the laplacian matrix
@@ -48,7 +48,20 @@ n. If left \code{NULL}, subjects will be automatically split into 5 folds}
 A named numeric vector of coefficients from the lasso or group lasso
 }
 \description{
-Fit prolong Model to Data
+\code{prolong()} is designed to take an \eqn{n \times t} outcome matrix and an
+\eqn{n \times p \times t} array of covariates and automatically run the
+entire processing and model fitting process, returning a list of coefficients
+with corresponding variable names.
+}
+\details{
+First, the data is reshaped into the first-differenced vectorized
+\eqn{n(t-1)} length Y and first-differenced matricized \eqn{n(t-1) \times
+pt(t-1)/2} X with a corresponding dependence matrix.
+Next, hyperparameters for the graph laplacian-based network
+penalty are found via MLE and the parameter for lasso/group lasso is found
+via a careful implementation of cross-validation.
+Lastly, a group lasso + laplacian or lasso + laplacian model is implemented,
+and its bias-adjusted coefficients are returned.
 }
 \examples{
 \dontrun{
