@@ -1,4 +1,4 @@
-getmin <- function (lambda, cvm, cvsd) # same as unexported gglasso:::getmin
+getmin <- function(lambda, cvm, cvsd) # same as unexported gglasso:::getmin
 {
   cvmin <- min(cvm)
   idmin <- cvm <= cvmin
@@ -15,7 +15,7 @@ cv.gglasso_prolong <-
            y,
            group,
            lambda = NULL,
-           pred.loss = c("misclass","loss", "L1", "L2"),
+           pred.loss = c("misclass", "loss", "L1", "L2"),
            nfolds = 5,
            foldid,
            delta) {

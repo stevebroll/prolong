@@ -16,7 +16,7 @@ get_delta_X <- function(X, n, p, t) {
     rowvec <- rowvec + n
   }
 
-  return(list('DX' = DX, 'DXarray' = DXarray))
+  return(list("DX" = DX, "DXarray" = DXarray))
 }
 
 
