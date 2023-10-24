@@ -2,3 +2,4 @@
 
 export(prolong)
 importFrom(Rdpack,reprompt)
+importFrom(foreach,"%dopar%")
