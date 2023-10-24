@@ -44,6 +44,7 @@
 #' @export
 #'
 #' @importFrom Rdpack reprompt
+#' @importFrom foreach %dopar%
 #'
 #' @examples
 #' \dontrun{
@@ -153,7 +154,19 @@ prolong <-
     }
 
     if (is.null(groups) | isFALSE(groups)) {
-      NULL
+      cv <- cv.glmnet_prolong(
+        Xaug,
+        Yaug,
+        foldid = foldids
+      )
+      llmod <- glmnet::glmnet(
+        Xaug,
+        Yaug,
+        intercept = F,
+        lambda = cv$lambda.1se)
+      coefs <- stats::coef(gllmod)[-1, ]
+      coefs <- coefs / (sqrt(1 + lambda2))
+      names(coefs) <- rep(colnames(DXout$DXarray), each = tri)
     } else {
       if (isTRUE(groups)) {
         groups <- rep(1:p, each = tri)
