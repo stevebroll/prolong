@@ -122,8 +122,10 @@ n. If left <code>NULL</code>, subjects will be automatically split into 5 folds<
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>A named numeric vector of coefficients from the lasso or group lasso</p>
-    </div>
+<p>A list object with S3 class <code>prolong</code></p>
+
+
+<table class="table table"><tr><td><code>beta</code></td><td><code>p*length(lambda1)</code> matrix of coefficients. Currently, <code>lambda1</code> is chosen by cv and is just a single value</td></tr><tr><td><code>selected</code></td><td>the names of the variables with at least one non-zero coefficient</td></tr><tr><td><code>df</code></td><td>number of non-zero coefficients (out of <code>p*t(t-1)/2</code>, not <code>p</code>)</td></tr><tr><td><code>dim</code></td><td>dimension of full coefficient matrix over lambdas. Currently, <code>lambda</code> is chosen by cv and is just a single value</td></tr><tr><td><code>lambda</code></td><td>sequence of <code>lambda1</code> values used in final gglasso/glmnet call</td></tr><tr><td><code>npasses</code></td><td>total number of iterations summed over <code>lambda1</code> values for final gglasso/glmnet call</td></tr><tr><td><code>jerr</code></td><td>error flag for final gglasso/glmnet call, 0 if no error</td></tr><tr><td><code>group</code></td><td>vector of consecutive integers describing the grouping of coefficients</td></tr><tr><td><code>call</code></td><td>the gglasso/glmnet call that produced this object</td></tr></table></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>First, the data is reshaped into the first-differenced vectorized
@@ -170,11 +172,13 @@ ISSN 00359246, <a href="http://www.jstor.org/stable/2346178" class="external-lin
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="va">coefs</span> <span class="op">&lt;-</span> <span class="fu">prolong</span><span class="op">(</span><span class="va">Ymatrix</span>, <span class="va">Xarray</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">coefs</span></span></span>
+<span class="r-in"><span><span class="va">promod</span> <span class="op">&lt;-</span> <span class="fu">prolong</span><span class="op">(</span><span class="va">Ymatrix</span>, <span class="va">Xarray</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">promod</span><span class="op">$</span><span class="va">beta</span></span></span>
+<span class="r-in"><span><span class="va">promod</span><span class="op">$</span><span class="va">selected</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">coefs</span> <span class="op">&lt;-</span> <span class="fu">prolong</span><span class="op">(</span><span class="va">Ymatrix</span>, <span class="va">Xarray</span>, lambda2 <span class="op">=</span> <span class="fl">.001</span>, lambdar <span class="op">=</span> <span class="fl">10</span>, groups <span class="op">=</span> <span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">coefs</span></span></span>
+<span class="r-in"><span><span class="va">promod</span> <span class="op">&lt;-</span> <span class="fu">prolong</span><span class="op">(</span><span class="va">Ymatrix</span>, <span class="va">Xarray</span>, lambda2 <span class="op">=</span> <span class="fl">.001</span>, lambdar <span class="op">=</span> <span class="fl">10</span>, groups <span class="op">=</span> <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">promod</span><span class="op">$</span><span class="va">beta</span></span></span>
+<span class="r-in"><span><span class="va">promod</span><span class="op">$</span><span class="va">selected</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
