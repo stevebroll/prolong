@@ -45,7 +45,18 @@ n. If left \code{NULL}, subjects will be automatically split into 5 folds}
 \code{optim()} for the MLE of lambda2 and lambdar}
 }
 \value{
-A named numeric vector of coefficients from the lasso or group lasso
+A list object with S3 class \code{prolong}
+\tabular{ll}{
+\code{beta} \tab \code{p*length(lambda1)} matrix of coefficients. Currently, \code{lambda1} is chosen by cv and is just a single value \cr
+\code{selected} \tab the names of the variables with at least one non-zero coefficient \cr
+\code{df} \tab number of non-zero coefficients (out of \code{p*t(t-1)/2}, not \code{p})\cr
+\code{dim} \tab dimension of full coefficient matrix over lambdas. Currently, \code{lambda} is chosen by cv and is just a single value \cr
+\code{lambda} \tab sequence of \code{lambda1} values used in final gglasso/glmnet call \cr
+\code{npasses} \tab total number of iterations summed over \code{lambda1} values for final gglasso/glmnet call \cr
+\code{jerr} \tab error flag for final gglasso/glmnet call, 0 if no error \cr
+\code{group} \tab vector of consecutive integers describing the grouping of coefficients \cr
+\code{call} \tab the gglasso/glmnet call that produced this object \cr
+}
 }
 \description{
 \code{prolong()} is designed to take an \eqn{n \times t} outcome matrix and an
@@ -65,11 +76,13 @@ and its bias-adjusted coefficients are returned.
 }
 \examples{
 \dontrun{
-coefs <- prolong(Ymatrix, Xarray)
-coefs
+promod <- prolong(Ymatrix, Xarray)
+promod$beta
+promod$selected
 
-coefs <- prolong(Ymatrix, Xarray, lambda2 = .001, lambdar = 10, groups = )
-coefs
+promod <- prolong(Ymatrix, Xarray, lambda2 = .001, lambdar = 10, groups = )
+promod$beta
+promod$selected
 }
 
 }

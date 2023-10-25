@@ -40,7 +40,18 @@
 #'
 #'
 #'
-#' @return A named numeric vector of coefficients from the lasso or group lasso
+#' @return A list object with S3 class `prolong`
+#' \tabular{ll}{
+#' \code{beta} \tab `p*length(lambda1)` matrix of coefficients. Currently, `lambda1` is chosen by cv and is just a single value \cr
+#' \code{selected} \tab the names of the variables with at least one non-zero coefficient \cr
+#' \code{df} \tab number of non-zero coefficients (out of `p*t(t-1)/2`, not `p`)\cr
+#' \code{dim} \tab dimension of full coefficient matrix over lambdas. Currently, `lambda` is chosen by cv and is just a single value \cr
+#' \code{lambda} \tab sequence of `lambda1` values used in final gglasso/glmnet call \cr
+#' \code{npasses} \tab total number of iterations summed over `lambda1` values for final gglasso/glmnet call \cr
+#' \code{jerr} \tab error flag for final gglasso/glmnet call, 0 if no error \cr
+#' \code{group} \tab vector of consecutive integers describing the grouping of coefficients \cr
+#' \code{call} \tab the gglasso/glmnet call that produced this object \cr
+#' }
 #' @export
 #'
 #' @importFrom Rdpack reprompt
@@ -48,11 +59,13 @@
 #'
 #' @examples
 #' \dontrun{
-#' coefs <- prolong(Ymatrix, Xarray)
-#' coefs
+#' promod <- prolong(Ymatrix, Xarray)
+#' promod$beta
+#' promod$selected
 #'
-#' coefs <- prolong(Ymatrix, Xarray, lambda2 = .001, lambdar = 10, groups = )
-#' coefs
+#' promod <- prolong(Ymatrix, Xarray, lambda2 = .001, lambdar = 10, groups = )
+#' promod$beta
+#' promod$selected
 #' }
 #'
 #' @references
@@ -156,19 +169,28 @@ prolong <-
     }
 
     if (is.null(groups) | isFALSE(groups)) {
-      cv <- cv.glmnet_prolong(
-        Xaug,
-        Yaug,
-        foldid = foldids
-      )
+      if (is.null(lambda1)) {
+        cv <- cv.glmnet_prolong(
+          Xaug,
+          Yaug,
+          foldid = foldids
+        )
+        lambdas <- cv$lambda.1se
+      } else {
+        lambdas <- lambda1
+      }
       llmod <- glmnet::glmnet(
         Xaug,
         Yaug,
         intercept = F,
-        lambda = cv$lambda.1se)
+        lambda = cv$lambda.1se
+      )
       coefs <- stats::coef(gllmod)[-1, ]
       coefs <- coefs / (sqrt(1 + lambda2))
       names(coefs) <- rep(colnames(DXout$DXarray), each = tri)
+      npasses <- llmod$npasses
+      jerr <- llmod$jerr
+      call <- llmod$call
     } else {
       if (isTRUE(groups)) {
         groups <- rep(1:p, each = tri)
@@ -180,24 +202,49 @@ prolong <-
       #   group = groups,
       #   foldid = foldids
       # )
-      cv <- cv.gglasso_prolong(
-        Xaug,
-        Yaug,
-        group = groups,
-        foldid = foldids,
-        pred.loss = "L2"
-      )
+      if (is.null(lambda1)) {
+        cv <- cv.gglasso_prolong(
+          Xaug,
+          Yaug,
+          group = groups,
+          foldid = foldids,
+          pred.loss = "L2",
+        )
+        lambdas <- cv$lambda.1se
+
+      } else {
+        lambdas <- lambda1
+      }
       gllmod <- gglasso::gglasso(
         Xaug,
         Yaug,
         intercept = F,
         group = groups,
-        lambda = cv$lambda.1se
+        lambda = lambdas
       )
       coefs <- stats::coef(gllmod)[-1, ]
       coefs <- coefs / (sqrt(1 + lambda2))
       names(coefs) <- rep(colnames(DXout$DXarray), each = tri)
+      npasses <- gllmod$npasses
+      jerr <- gllmod$jerr
+      call <- gllmod$call
     }
 
-    return(coefs)
+    df <- length(which(coefs != 0))
+    selected <- unique(names(coefs)[which(coefs != 0)])
+
+    output <- list(
+      "beta" = as.matrix(coefs),
+      "selected" = selected,
+      "df" = df,
+      "dim" = c(p, length(lambdas)),
+      "lambda" = lambdas,
+      "npasses" = npasses,
+      "jerr" = jerr,
+      "group" = groups,
+      "call" = call
+    )
+    class(output) <- c("prolong", class(output))
+
+    return(output)
   }
