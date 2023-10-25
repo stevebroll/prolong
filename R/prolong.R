@@ -52,6 +52,7 @@
 #' \code{group} \tab vector of consecutive integers describing the grouping of coefficients \cr
 #' \code{call} \tab the gglasso/glmnet call that produced this object \cr
 #' }
+#'
 #' @export
 #'
 #' @importFrom Rdpack reprompt
