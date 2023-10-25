@@ -59,6 +59,8 @@
 #' \insertAllCited{}
 #' \insertRef{gglasso}{prolong}
 #' \insertRef{group-lasso}{prolong}
+#' \insertRef{glmnet}{prolong}
+#' \insertRef{lasso}{prolong}
 #'
 prolong <-
   function(Y,
