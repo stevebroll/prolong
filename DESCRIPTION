@@ -15,8 +15,11 @@ Imports:
     igraph,
     glmnet,
     foreach,
+    ggplot2,
+    plotly,
     Rdpack (>= 0.7),
-    magrittr
+    magrittr,
+    rlang
 RdMacros: Rdpack
 URL: https://github.com/stevebroll/prolong, https://stevebroll.github.io/prolong/
 BugReports: https://github.com/stevebroll/prolong/issues
