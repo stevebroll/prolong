@@ -5,8 +5,8 @@
 \title{Fit prolong Model}
 \usage{
 prolong(
-  Y,
-  X,
+  x,
+  y,
   lambda1 = NULL,
   lambda2 = NULL,
   lambdar = NULL,
@@ -16,9 +16,9 @@ prolong(
 )
 }
 \arguments{
-\item{Y}{Input response matrix, with n rows and t columns}
+\item{x}{Input covariate array, with n rows, p columns, and t slices}
 
-\item{X}{Input covariate array, with n rows, p columns, and t slices}
+\item{y}{Input response matrix, with n rows and t columns}
 
 \item{lambda1}{Lasso/group lasso parameter, if left \code{NULL} this parameter
 will be chosen via a cross-validation that keeps each subject's observations

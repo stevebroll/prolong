@@ -17,8 +17,8 @@
 #' Lastly, a group lasso + laplacian or lasso + laplacian model is implemented,
 #' and its bias-adjusted coefficients are returned.
 #'
-#' @param Y Input response matrix, with n rows and t columns
-#' @param X Input covariate array, with n rows, p columns, and t slices
+#' @param x Input covariate array, with n rows, p columns, and t slices
+#' @param y Input response matrix, with n rows and t columns
 #' @param lambda1 Lasso/group lasso parameter, if left `NULL` this parameter
 #' will be chosen via a cross-validation that keeps each subject's observations
 #' across time points together. It is recommended to save the lambda2 and
@@ -79,19 +79,19 @@
 #' \insertRef{lasso}{prolong}
 #'
 prolong <-
-  function(Y,
-           X,
+  function(x,
+           y,
            lambda1 = NULL,
            lambda2 = NULL,
            lambdar = NULL,
            groups = TRUE,
            foldids = NULL,
            optimvals = c(1, 0.01)) {
-    if (nrow(Y) != nrow(X)) {
+    if (nrow(y) != nrow(x)) {
       stop("Incompatible dimensions for X and Y, X and Y should have same #
            rows, 1 for each sample")
     }
-    if (ncol(Y) != dim(X)[3]) {
+    if (ncol(y) != dim(x)[3]) {
       stop(
         "Incompatible dimensions for X and Y, Y should have t columns the third
         component of dim(X) should also be t"
@@ -108,13 +108,13 @@ prolong <-
         from 1 to # groups"
       )
     }
-    n <- nrow(X)
-    p <- ncol(X)
-    t <- ncol(Y)
+    n <- nrow(x)
+    p <- ncol(x)
+    t <- ncol(y)
     g <- length(unique(groups))
 
-    DXout <- get_delta_X(X, n, p, t)
-    DY <- get_delta_Y(Y, n, t)
+    DXout <- get_delta_x(x, n, p, t)
+    DY <- get_delta_y(y, n, t)
     cormat <- get_cor_matrix(DXout$DXarray)
     graph <-
       igraph::graph_from_adjacency_matrix(cormat,
