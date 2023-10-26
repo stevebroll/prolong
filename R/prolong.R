@@ -45,8 +45,10 @@
 #' \code{beta} \tab `p*length(lambda1)` matrix of coefficients. Currently, `lambda1` is chosen by cv and is just a single value \cr
 #' \code{selected} \tab the names of the variables with at least one non-zero coefficient \cr
 #' \code{df} \tab number of non-zero coefficients (out of `p*t(t-1)/2`, not `p`)\cr
-#' \code{dim} \tab dimension of full coefficient matrix over lambdas. Currently, `lambda` is chosen by cv and is just a single value \cr
-#' \code{lambda} \tab sequence of `lambda1` values used in final gglasso/glmnet call \cr
+#' \code{dim} \tab dimension of full coefficient matrix over `lambda1` values. Currently, `lambda1` is chosen by cv and is just a single value \cr
+#' \code{lambda1} \tab sequence of `lambda1` values used in final gglasso/glmnet call \cr
+#' \code{lambda2} \tab `lambda2` value either passed by user or chosen via MLE, parameter of interest for the network penalty \cr
+#' \code{lambdar} \tab `lambdar` value either passed by user or chosen via MLE, nuisance parameter needed to estimate `lambda2` via MLE \cr
 #' \code{npasses} \tab total number of iterations summed over `lambda1` values for final gglasso/glmnet call \cr
 #' \code{jerr} \tab error flag for final gglasso/glmnet call, 0 if no error \cr
 #' \code{group} \tab vector of consecutive integers describing the grouping of coefficients \cr
@@ -176,9 +178,9 @@ prolong <-
           Yaug,
           foldid = foldids
         )
-        lambdas <- cv$lambda.1se
+        lambda1 <- cv$lambda.1se
       } else {
-        lambdas <- lambda1
+        lambda1 <- lambda1
       }
       llmod <- glmnet::glmnet(
         Xaug,
@@ -211,17 +213,17 @@ prolong <-
           foldid = foldids,
           pred.loss = "L2",
         )
-        lambdas <- cv$lambda.1se
+        lambda1 <- cv$lambda.1se
 
       } else {
-        lambdas <- lambda1
+        lambda1 <- lambda1
       }
       gllmod <- gglasso::gglasso(
         Xaug,
         Yaug,
         intercept = F,
         group = groups,
-        lambda = lambdas
+        lambda = lambda1
       )
       coefs <- stats::coef(gllmod)[-1, ]
       coefs <- coefs / (sqrt(1 + lambda2))
@@ -238,8 +240,10 @@ prolong <-
       "beta" = as.matrix(coefs),
       "selected" = selected,
       "df" = df,
-      "dim" = c(p, length(lambdas)),
-      "lambda" = lambdas,
+      "dim" = c(p, length(lambda1)),
+      "lambda1" = lambda1,
+      "lambda2" = lambda2,
+      "lambdar" = lambdar,
       "npasses" = npasses,
       "jerr" = jerr,
       "group" = groups,

@@ -50,8 +50,10 @@ A list object with S3 class \code{prolong}
 \code{beta} \tab \code{p*length(lambda1)} matrix of coefficients. Currently, \code{lambda1} is chosen by cv and is just a single value \cr
 \code{selected} \tab the names of the variables with at least one non-zero coefficient \cr
 \code{df} \tab number of non-zero coefficients (out of \code{p*t(t-1)/2}, not \code{p})\cr
-\code{dim} \tab dimension of full coefficient matrix over lambdas. Currently, \code{lambda} is chosen by cv and is just a single value \cr
-\code{lambda} \tab sequence of \code{lambda1} values used in final gglasso/glmnet call \cr
+\code{dim} \tab dimension of full coefficient matrix over \code{lambda1} values. Currently, \code{lambda1} is chosen by cv and is just a single value \cr
+\code{lambda1} \tab sequence of \code{lambda1} values used in final gglasso/glmnet call \cr
+\code{lambda2} \tab \code{lambda2} value either passed by user or chosen via MLE, parameter of interest for the network penalty \cr
+\code{lambdar} \tab \code{lambdar} value either passed by user or chosen via MLE, nuisance parameter needed to estimate \code{lambda2} via MLE \cr
 \code{npasses} \tab total number of iterations summed over \code{lambda1} values for final gglasso/glmnet call \cr
 \code{jerr} \tab error flag for final gglasso/glmnet call, 0 if no error \cr
 \code{group} \tab vector of consecutive integers describing the grouping of coefficients \cr
