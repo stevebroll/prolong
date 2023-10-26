@@ -42,17 +42,17 @@
 #'
 #' @return A list object with S3 class `prolong`
 #' \tabular{ll}{
-#' \code{beta} \tab `p*length(lambda1)` matrix of coefficients. Currently, `lambda1` is chosen by cv and is just a single value \cr
+#' \code{beta} \tab `p*length(lambda1)` matrix of coefficients. Currently, `lambda1` is chosen via cross-validation and is just a single value \cr
 #' \code{selected} \tab the names of the variables with at least one non-zero coefficient \cr
 #' \code{df} \tab number of non-zero coefficients (out of `p*t(t-1)/2`, not `p`)\cr
-#' \code{dim} \tab dimension of full coefficient matrix over `lambda1` values. Currently, `lambda1` is chosen by cv and is just a single value \cr
-#' \code{lambda1} \tab sequence of `lambda1` values used in final gglasso/glmnet call \cr
+#' \code{dim} \tab dimension of full coefficient matrix over `lambda1` values. Currently, `lambda1` is chosen via cross-validation and is just a single value \cr
+#' \code{lambda1} \tab sequence of `lambda1` values used in final `gglasso`/`glmnet` call \cr
 #' \code{lambda2} \tab `lambda2` value either passed by user or chosen via MLE, parameter of interest for the network penalty \cr
 #' \code{lambdar} \tab `lambdar` value either passed by user or chosen via MLE, nuisance parameter needed to estimate `lambda2` via MLE \cr
-#' \code{npasses} \tab total number of iterations summed over `lambda1` values for final gglasso/glmnet call \cr
-#' \code{jerr} \tab error flag for final gglasso/glmnet call, 0 if no error \cr
+#' \code{npasses} \tab total number of iterations summed over `lambda1` values for final `gglasso`/`glmnet` call \cr
+#' \code{jerr} \tab error flag for final `gglasso`/`glmnet` call, 0 if no error \cr
 #' \code{group} \tab vector of consecutive integers describing the grouping of coefficients \cr
-#' \code{call} \tab the gglasso/glmnet call that produced this object \cr
+#' \code{call} \tab the `gglasso`/`glmnet` call that produced this object \cr
 #' }
 #'
 #' @export

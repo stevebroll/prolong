@@ -14,7 +14,7 @@ in a point-and-click GUI shiny app for plots that reveal the underlying
 correlation structure of the omics variables.
 
 A preview of the shiny app that is being continuously updated is
-availableb at the following link: [Shiny
+available at the following link: [Shiny
 App](https://stevebroll-cornell.shinyapps.io/TBcorr/)
 
 ## Installation

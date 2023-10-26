@@ -47,17 +47,17 @@ n. If left \code{NULL}, subjects will be automatically split into 5 folds}
 \value{
 A list object with S3 class \code{prolong}
 \tabular{ll}{
-\code{beta} \tab \code{p*length(lambda1)} matrix of coefficients. Currently, \code{lambda1} is chosen by cv and is just a single value \cr
+\code{beta} \tab \code{p*length(lambda1)} matrix of coefficients. Currently, \code{lambda1} is chosen via cross-validation and is just a single value \cr
 \code{selected} \tab the names of the variables with at least one non-zero coefficient \cr
 \code{df} \tab number of non-zero coefficients (out of \code{p*t(t-1)/2}, not \code{p})\cr
-\code{dim} \tab dimension of full coefficient matrix over \code{lambda1} values. Currently, \code{lambda1} is chosen by cv and is just a single value \cr
-\code{lambda1} \tab sequence of \code{lambda1} values used in final gglasso/glmnet call \cr
+\code{dim} \tab dimension of full coefficient matrix over \code{lambda1} values. Currently, \code{lambda1} is chosen via cross-validation and is just a single value \cr
+\code{lambda1} \tab sequence of \code{lambda1} values used in final \code{gglasso}/\code{glmnet} call \cr
 \code{lambda2} \tab \code{lambda2} value either passed by user or chosen via MLE, parameter of interest for the network penalty \cr
 \code{lambdar} \tab \code{lambdar} value either passed by user or chosen via MLE, nuisance parameter needed to estimate \code{lambda2} via MLE \cr
-\code{npasses} \tab total number of iterations summed over \code{lambda1} values for final gglasso/glmnet call \cr
-\code{jerr} \tab error flag for final gglasso/glmnet call, 0 if no error \cr
+\code{npasses} \tab total number of iterations summed over \code{lambda1} values for final \code{gglasso}/\code{glmnet} call \cr
+\code{jerr} \tab error flag for final \code{gglasso}/\code{glmnet} call, 0 if no error \cr
 \code{group} \tab vector of consecutive integers describing the grouping of coefficients \cr
-\code{call} \tab the gglasso/glmnet call that produced this object \cr
+\code{call} \tab the \code{gglasso}/\code{glmnet} call that produced this object \cr
 }
 }
 \description{
