@@ -1,9 +1,30 @@
+#' 2D and 3D Scatter Plots for Delta-Scale Pairwise Correlations
+#'
+#' @inheritParams prolong
+#' @param timediff1 First pair of time points for the x-axis of the scatter plot. Should be in format `'t2-t1'`
+#' @param timediff2 Second pair of time points for the y-axis of the scatter plot. Should be in format `'t2-t1'`
+#' @param timediff3 Optional third pair of time points for the z-axis of the scatter plot. Should be in format `'t2-t1'`
+#' @param fisherz If `TRUE`, the Fisher z-transformation (atanh) will be applied to the correlations
+#' @param interactive If `TRUE` and timediff3 is `NULL`, an interactive `plotly` plot with hover text containing correlations and variable names will be generated. If `FALSE` and timediff3 is `NULL`, a regular `ggplot2` scatterplot will be shown. If timediff3 is provided, this parameter will only determine whether hovertext is shown
+#' @param digits Number of digits for rounding in the hovertext
+#'
+#' @return Either a 2D or 3D scatterplot
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' delta_scatter(Xarray)
+#' delta_scatter(Xarray, timediff3 = "4-3")
+#' delta_scatter(Xarray, timediff1 = "3-1", timediff2 = "5-3", timediff3 = "7-5")
+#' }
+#'
 delta_scatter <- function(x,
                           timediff1 = "2-1",
                           timediff2 = "3-2",
                           timediff3 = NULL,
-                          fisherz = T,
-                          interactive = T,
+                          fisherz = TRUE,
+                          interactive = TRUE,
                           digits = 3) {
   p <- ncol(x)
 
