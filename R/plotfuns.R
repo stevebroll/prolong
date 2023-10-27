@@ -70,13 +70,16 @@ delta_scatter <- function(x,
       )
     }
     name <- colnames(rmat)[1:2]
-    p <- ggplot2::ggplot(data = rmat, ggplot2::aes(
-      x = rlang::.data[[name[1]]],
-      y = rlang::.data[[name[2]]],
-      text = c(paste(
-        "Variable 1:", rmat[, 3], "\nVariable 2:", rmat[, 4]
-      ))
-    )) +
+    p <- ggplot2::ggplot(
+      data = rmat,
+      ggplot2::aes(
+        x = rlang::.data[[name[1]]],
+        y = rlang::.data[[name[2]]],
+        text = c(paste(
+          "Variable 1:", rmat[, 3], "\nVariable 2:", rmat[, 4]
+        ))
+      )
+    ) +
       ggplot2::geom_point(size = .5)
     if (interactive) {
       p <- p %>% plotly::toWebGL()
@@ -124,13 +127,16 @@ delta_scatter <- function(x,
       )
     }
     name <- colnames(rmat)[1:3]
-    p <- ggplot2::ggplot(data = rmat, ggplot2::aes(
-      x = rlang::.data[[name[1]]],
-      y = rlang::.data[[name[2]]],
-      text = c(paste(
-        "Variable 1:", rmat[, 3], "\nVariable 2:", rmat[, 4]
-      ))
-    )) +
+    p <- ggplot2::ggplot(
+      data = rmat,
+      ggplot2::aes(
+        x = rlang::.data[[name[1]]],
+        y = rlang::.data[[name[2]]],
+        text = c(paste(
+          "Variable 1:", rmat[, 3], "\nVariable 2:", rmat[, 4]
+        ))
+      )
+    ) +
       ggplot2::geom_point(size = .5)
     if (interactive) {
       p <- plotly::plot_ly(
@@ -167,5 +173,54 @@ delta_scatter <- function(x,
       p <- p %>% plotly::partial_bundle()
       p
     }
+  }
+}
+
+
+
+#' Interactive Heatmaps for Delta-Scale Pairwise Correlations
+#'
+#' @inheritParams prolong
+#' @param timediff Pair of time points to use in heatmap. Should be in format `'t2-t1'`
+#' @param interactive If `TRUE`, a shiny app will open in browser that will display an interactive version of the heatmap where sub-heatmaps can be selected for display
+#' @param grayscale If `TRUE` the viridis colors will be desaturated to grayscale
+#'
+#' @return A heatmap, possibly interactive in a shiny app
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' delta_heatmap(Xarray)
+#' delta_heatmap(Xarray, timediff = "4-2", interactive = F, grayscale = T)
+#' }
+delta_heatmap <- function(x,
+                          timediff = "2-1",
+                          interactive = TRUE,
+                          grayscale = FALSE) {
+  t1 <- unlist(strsplit(timediff, "-"))[1]
+  t2 <- unlist(strsplit(timediff, "-"))[2]
+  x1 <- x[, , t2] - x[, , t1]
+  rr1 <- abs(stats::cor(x1))
+  cols <- grDevices::hcl.colors(100, palette = "viridis")
+  if (grayscale) {
+    cols <- colorspace::desaturate(cols)
+  }
+  ht <- complexheatmap.2(
+    rr1,
+    distfun = function(v) {
+      stats::as.dist(1 - v)
+    },
+    col = cols,
+    trace = "none",
+    symm = T,
+    keysize = .5,
+    offsetRow = 0,
+    offsetCol = 0
+  )
+  if (interactive) {
+    InteractiveComplexHeatmap::htShiny(ht)
+  } else {
+    ht
   }
 }

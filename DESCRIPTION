@@ -19,7 +19,12 @@ Imports:
     plotly,
     Rdpack (>= 0.7),
     magrittr,
-    rlang
+    rlang,
+    ComplexHeatmap,
+    InteractiveComplexHeatmap,
+    colorspace,
+    matrixStats,
+    circlize
 RdMacros: Rdpack
 URL: https://github.com/stevebroll/prolong, https://stevebroll.github.io/prolong/
 BugReports: https://github.com/stevebroll/prolong/issues
