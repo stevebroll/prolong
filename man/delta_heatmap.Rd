@@ -26,4 +26,7 @@ Interactive Heatmaps for Delta-Scale Pairwise Correlations
 delta_heatmap(Xarray)
 delta_heatmap(Xarray, timediff = "4-2", interactive = F, grayscale = T)
 }
+
+\insertRef{CH2}{prolong}
+\insertRef{CH3}{prolong}
 }

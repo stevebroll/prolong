@@ -19,6 +19,8 @@
 #' delta_scatter(Xarray, timediff1 = "3-1", timediff2 = "5-3", timediff3 = "7-5")
 #' }
 #'
+#' \insertRef{ggplot2}{prolong}
+#' \insertRef{plotly}{prolong}
 delta_scatter <- function(x,
                           timediff1 = "2-1",
                           timediff2 = "3-2",
@@ -194,6 +196,9 @@ delta_scatter <- function(x,
 #' delta_heatmap(Xarray)
 #' delta_heatmap(Xarray, timediff = "4-2", interactive = F, grayscale = T)
 #' }
+#'
+#' \insertRef{CH2}{prolong}
+#' \insertRef{CH3}{prolong}
 delta_heatmap <- function(x,
                           timediff = "2-1",
                           interactive = TRUE,
