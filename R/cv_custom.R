@@ -109,24 +109,26 @@ cvtype <- function(type.measure = "mse",
     class = "Misclassification Error",
     C = "C-index"
   )
-  subclass.ch <- switch(
-    subclass,
+  subclass.ch <- switch(subclass,
     elnet = c(1, 2, 5),
-    lognet = c(2,
-               3, 4, 1, 5),
+    lognet = c(
+      2,
+      3, 4, 1, 5
+    ),
     fishnet = c(2, 1, 5),
     coxnet = c(2, 6),
     multnet = c(2, 3, 1, 5),
     mrelnet = c(1, 2, 5),
-    glmnetfit = c(2,
-                  1, 5)
+    glmnetfit = c(
+      2,
+      1, 5
+    )
   )
   subclass.type <- type.measures[subclass.ch]
   if (type.measure == "default") {
     type.measure <- subclass.type[1]
   }
-  model.name <- switch(
-    subclass,
+  model.name <- switch(subclass,
     elnet = "Gaussian",
     lognet = "Binomial",
     fishnet = "Poisson",
