@@ -82,7 +82,7 @@ promod <- prolong(Ymatrix, Xarray)
 promod$beta
 promod$selected
 
-promod <- prolong(Ymatrix, Xarray, lambda2 = .001, lambdar = 10, groups = )
+promod <- prolong(Ymatrix, Xarray, lambda2 = .001, lambdar = 10, groups = FALSE)
 promod$beta
 promod$selected
 }

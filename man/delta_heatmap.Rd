@@ -27,6 +27,8 @@ delta_heatmap(Xarray)
 delta_heatmap(Xarray, timediff = "4-2", interactive = F, grayscale = T)
 }
 
+}
+\references{
 \insertRef{CH2}{prolong}
 \insertRef{CH3}{prolong}
 }

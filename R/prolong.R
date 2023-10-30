@@ -66,7 +66,7 @@
 #' promod$beta
 #' promod$selected
 #'
-#' promod <- prolong(Ymatrix, Xarray, lambda2 = .001, lambdar = 10, groups = )
+#' promod <- prolong(Ymatrix, Xarray, lambda2 = .001, lambdar = 10, groups = FALSE)
 #' promod$beta
 #' promod$selected
 #' }
@@ -214,7 +214,6 @@ prolong <-
           pred.loss = "L2",
         )
         lambda1 <- cv$lambda.1se
-
       } else {
         lambda1 <- lambda1
       }

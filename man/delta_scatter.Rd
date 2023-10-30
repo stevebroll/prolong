@@ -42,6 +42,8 @@ delta_scatter(Xarray, timediff3 = "4-3")
 delta_scatter(Xarray, timediff1 = "3-1", timediff2 = "5-3", timediff3 = "7-5")
 }
 
+}
+\references{
 \insertRef{ggplot2}{prolong}
 \insertRef{plotly}{prolong}
 }
