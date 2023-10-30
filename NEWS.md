@@ -1,3 +1,9 @@
+# prolong 0.4.0
+
+Added functions to produce delta-scale pairwise correlation scatterplots, heatmaps, and networks 
+
+Added function to produce a grid of trajectory plots for variables selected by prolong
+
 # prolong 0.3.0
 
 * Added support for lasso with custom cross-validation
