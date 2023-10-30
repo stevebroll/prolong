@@ -238,6 +238,7 @@ delta_heatmap <- function(x,
 #' @param object A `prolong` model object. Can be left `NULL` if `selected` is provided
 #' @param selected A character list of variable names or a numeric index of variables of interest whose trajectories are to be plotted. Can be left `NULL` if object is provided
 #' @param colors Either a single color to plot all trajectories or an n length vector with a color for each subject
+#' @param timelabs Optional numeric or character vector of labels for the t time points. If left `NULL`, 1:t will be used
 #'
 #' @return A 2d sequence of trajectory plots from facet_wrap()
 #' @export
@@ -252,6 +253,7 @@ plot_trajectories <-
   function(x,
            object = NULL,
            selected = NULL,
+           timelabs = NULL,
            colors = "#00BFC4") {
     if (is.null(object) & is.null(selected)) {
       stop("Either a `prolong` model object or list of variable names must be supplied")
@@ -281,7 +283,10 @@ plot_trajectories <-
       plotdat[(i - 1) * t + seq(t), ] <- t(x[i, varlist, ])
     }
     colnames(plotdat) <- colnames(x)
-    time <- rep(1:t, n)
+    if(is.null(timelabs)){
+      timelabs = 1:t
+    }
+    time <- factor(rep(timelabs, n), levels = timelabs)
     id <- rep(1:n, each = t)
     if (is.null(colors)) {
       colors <- "#00BFC4"

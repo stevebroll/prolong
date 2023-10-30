@@ -4,7 +4,13 @@
 \alias{plot_trajectories}
 \title{Automatically Plot Trajectories of Variables Selected by \code{prolong()}}
 \usage{
-plot_trajectories(x, object = NULL, selected = NULL, colors = "#00BFC4")
+plot_trajectories(
+  x,
+  object = NULL,
+  selected = NULL,
+  timelabs = NULL,
+  colors = "#00BFC4"
+)
 }
 \arguments{
 \item{x}{Input covariate array, with n rows, p columns, and t slices}
@@ -12,6 +18,8 @@ plot_trajectories(x, object = NULL, selected = NULL, colors = "#00BFC4")
 \item{object}{A \code{prolong} model object. Can be left \code{NULL} if \code{selected} is provided}
 
 \item{selected}{A character list of variable names or a numeric index of variables of interest whose trajectories are to be plotted. Can be left \code{NULL} if object is provided}
+
+\item{timelabs}{Optional numeric or character vector of labels for the t time points. If left \code{NULL}, 1:t will be used}
 
 \item{colors}{Either a single color to plot all trajectories or an n length vector with a color for each subject}
 }
