@@ -303,3 +303,50 @@ plot_trajectories <-
       ggplot2::geom_line(color = colors)
     p + ggplot2::facet_wrap("varname", scales = "free")
   }
+
+
+
+#' Network Plots for Delta-Scale Pairwise Correlations
+#'
+#' @inheritParams prolong
+#' @inheritParams delta_heatmap
+#' @param partial If `TRUE`, partial correlations using the `ppcor` package will be used. If `FALSE`, correlations will be used
+#' @param corr_thresh Correlation value threshold for edge inclusion in the graph
+#' @param interactive If `TRUE`, an interactive `visNetwork` plot will open in the Viewer panel. If `FALSE`, a static `igraph` plot will be produced
+#' @param method A character string indicating which correlation coefficient is to be computed, with "pearson" as default
+#'
+#' @return Either an interactive `visNetwork` or static `igraph` plot
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' delta_network(Xarray)
+#' delta_network(Xarray, timediff = '4-2', corr_thresh = .9, method = 'spearman')
+#' }
+delta_network <- function(x,
+                          timediff = "2-1",
+                          partial = TRUE,
+                          corr_thresh = 0.75,
+                          interactive = TRUE,
+                          method = c("pearson", "kendall", "spearman")) {
+  t1 <- unlist(strsplit(timediff, "-"))[1]
+  t2 <- unlist(strsplit(timediff, "-"))[2]
+  x1 <- x[, , t2] - x[, , t1]
+  if (partial) {
+    rr1 <- abs(ppcor::pcor(x1, method = method)$estimate)
+  } else {
+    rr1 <- abs(stats::cor(x1, method = method))
+  }
+  colnames(rr1) <- rownames(rr1) <- colnames(x)
+  diag(rr1) <- 0
+  rr1[which(rr1) > corr_thresh] <- 0
+  g1 <-
+    igraph::graph_from_adjacency_matrix(rr1, mode = "undirected", weighted = TRUE)
+  igraph::V(g1)$name <- colnames(x)
+  g1 <- igraph::delete.vertices(g1, which(igraph::degree(g1) == 0))
+  if (interactive) {
+    visNetwork::visIgraph(g1)
+  } else {
+    igraph::plot.igraph(g1)
+  }
+}

@@ -18,6 +18,8 @@ Imports:
     ggplot2,
     reshape2,
     plotly,
+    ppcor,
+    visNetwork,
     Rdpack (>= 0.7),
     magrittr,
     rlang,
