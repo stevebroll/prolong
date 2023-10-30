@@ -3,6 +3,7 @@
 export("%>%")
 export(delta_heatmap)
 export(delta_scatter)
+export(plot_trajectories)
 export(prolong)
 importFrom(Rdpack,reprompt)
 importFrom(foreach,"%dopar%")

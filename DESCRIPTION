@@ -16,6 +16,7 @@ Imports:
     glmnet,
     foreach,
     ggplot2,
+    reshape2,
     plotly,
     Rdpack (>= 0.7),
     magrittr,

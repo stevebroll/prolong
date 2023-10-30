@@ -19,6 +19,7 @@
 #' delta_scatter(Xarray, timediff1 = "3-1", timediff2 = "5-3", timediff3 = "7-5")
 #' }
 #'
+#' @references
 #' \insertRef{ggplot2}{prolong}
 #' \insertRef{plotly}{prolong}
 delta_scatter <- function(x,
@@ -197,6 +198,7 @@ delta_scatter <- function(x,
 #' delta_heatmap(Xarray, timediff = "4-2", interactive = F, grayscale = T)
 #' }
 #'
+#' @references
 #' \insertRef{CH2}{prolong}
 #' \insertRef{CH3}{prolong}
 delta_heatmap <- function(x,
@@ -229,3 +231,75 @@ delta_heatmap <- function(x,
     ht
   }
 }
+
+#' Automatically Plot Trajectories of Variables Selected by `prolong()`
+#'
+#' @inheritParams delta_scatter
+#' @param object A `prolong` model object. Can be left `NULL` if `selected` is provided
+#' @param selected A character list of variable names or a numeric index of variables of interest whose trajectories are to be plotted. Can be left `NULL` if object is provided
+#' @param colors Either a single color to plot all trajectories or an n length vector with a color for each subject
+#'
+#' @return A 2d sequence of trajectory plots from facet_wrap()
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' promod <- prolong(Ymatrix, Xarray)
+#' plot_trajectories(Xarray, promod)
+#' plot_trajectories(Xarray, selected = promod$selected)
+#' }
+plot_trajectories <-
+  function(x,
+           object = NULL,
+           selected = NULL,
+           colors = "#00BFC4") {
+    if (is.null(object) & is.null(selected)) {
+      stop("Either a `prolong` model object or list of variable names must be supplied")
+    }
+    if (is.null(object) & !("prolong" %in% class(object))) {
+      stop("Model object must be of class `prolong`")
+    }
+    if (!is.null(object)) {
+      varnames <- object$selected
+      varlist <- which(varnames %in% colnames(x))
+    } else if (!is.null(selected)) {
+      if (is.character(selected)) {
+        varnames <- selected
+        varlist <- which(varnames %in% colnames(x))
+      } else if (is.numeric(selected)) {
+        varlist <- selected
+      } else {
+        stop("selected must be a numeric or character vector")
+      }
+    }
+
+
+    n <- nrow(x)
+    t <- dim(x)[3]
+    plotdat <- matrix(NA, n * t, length(varlist))
+    for (i in 1:n) {
+      plotdat[(i - 1) * t + seq(t), ] <- t(x[i, varlist, ])
+    }
+    colnames(plotdat) <- colnames(x)
+    time <- rep(1:t, n)
+    id <- rep(1:n, each = t)
+    if (is.null(colors)) {
+      colors <- "#00BFC4"
+    } else if (length(colors == 1)) {
+      colors <- colors
+    } else if (length(colors == n)) {
+      colors <- rep(colors, each = t)
+    } else {
+      stop(
+        "colors should either a single color for all lines or an n length
+         vector with a color for each subject"
+      )
+    }
+    meltdf <- cbind(reshape2::melt(plotdat)[, 3:2], time, id)
+    colnames(meltdf)[2] <- "varname"
+    value <- meltdf$value # to avoid check notes
+    p <-
+      ggplot2::ggplot(meltdf, ggplot2::aes(x = time, y = value, group = id)) +
+      ggplot2::geom_line(color = colors)
+    p + ggplot2::facet_wrap("varname", scales = "free")
+  }
