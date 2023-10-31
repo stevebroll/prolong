@@ -3,6 +3,9 @@
 
 # prolong
 
+<a href="https://stevebroll.github.io/prolong/"><img src="man/figures/logo.png" />
+</a>
+
 <!-- badges: start -->
 <!-- badges: end -->
 
@@ -13,8 +16,6 @@ outcome over time. `prolong` also provides functionality in both R and
 in a point-and-click GUI shiny app for plots that reveal the underlying
 correlation structure of the omics variables. For more information,
 visit the [package website](https://stevebroll.github.io/prolong/).
-
-<a href="https://stevebroll.github.io/prolong/"><img src="man/figures/logo.png" align="right" height="139" alt="prolong website" /></a>
 
 A preview of the shiny app that is being continuously updated is
 available at the following link: [Shiny
