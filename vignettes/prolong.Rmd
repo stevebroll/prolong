@@ -1,0 +1,46 @@
+---
+title: "prolong"
+author: "Steve Broll"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{prolong}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+```
+
+```{r,eval = FALSE}
+library(prolong)
+
+```
+
+
+The `prolong` package has two primary objectives:
+
+* Facilitate the penalized modeling of high-dimensional longitudinal omics data with a longitudinal clinical outcome to obtain a sparse set of omics variables that co-vary with the outcome over time
+
+* Provide functionality in both R and in a point-and-click GUI shiny app for plots that reveal the underlying dependence structure of the omics variables
+
+For the first objective, the `prolong()` function takes an $n \times t$ matrix of clinical outcomes and a $n \times p \times t$ array of omics or omics-like variables and fits a model with a network penalty via laplacian matrix together with either a lasso or group lassa penalty. Hyperparameters can either be supplied or automatically estimated internally in `prolong()`. The `plot_trajectories()` function takes the output from `prolong()` and displays a grid of the trajectories of the variables selected by the (group) lasso + laplacian model. 
+
+For the second objective, the `prolong` package has several plot functions that take the same $n \times p \times t$ array of omics or omics-like variables and look at the pairwise correlations of the first-differenced, or delta-scale, omics or omics-like data. The following functions are currently supported: 
+
+* `delta_scatter()` - 2D or 3D scatterplots 
+
+* `delta_heatmap()` - Interactive subsettable heatmaps
+
+* `delta_network()` - Interactive network visualizations
+
+The `prolong` package comes with example data that is simulated to imitate the motivating data for the `prolong` methodology. There are two components that can be accessed with the `load()` function: 
+
+* `sim_metabs` Simulated variables in a $15 \times 100 \times 4$ array
+
+* `sim_outcome` Simulated outcome in a $15 \times 4$ matrix
+

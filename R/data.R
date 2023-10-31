@@ -21,8 +21,5 @@
 #' @format ## `sim_outcome`
 #' A numeric matrix with n = 15 rows and t = 4 columns
 #'
-#' @usage data(sim_metabs)
-
-
-
+#' @usage data(sim_outcome)
 "sim_outcome"

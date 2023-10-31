@@ -11,7 +11,7 @@ A numeric matrix with n = 15 rows and t = 4 columns
 }
 }
 \usage{
-data(sim_metabs)
+data(sim_outcome)
 }
 \description{
 A 15x4 matrix containing 20 simulated clinical outcome values. Intended for
