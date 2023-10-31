@@ -16,7 +16,7 @@ cv.gglasso_prolong <-
            y,
            group,
            lambda = NULL,
-           pred.loss = c("misclass", "loss", "L1", "L2"),
+           pred.loss = c("L2"),
            nfolds = 5,
            foldid,
            delta) {
@@ -407,7 +407,6 @@ cv.glmnet_prolong <-
              "lambda",
              "fraction"
            ),
-           grouped = TRUE,
            keep = FALSE,
            parallel = FALSE,
            gamma = c(0, 0.25, 0.5, 0.75, 1),

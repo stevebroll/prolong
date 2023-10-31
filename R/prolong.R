@@ -176,7 +176,9 @@ prolong <-
         cv <- cv.glmnet_prolong(
           Xaug,
           Yaug,
-          foldid = foldids
+          foldid = foldids,
+          grouped = F,
+          intercept = F
         )
         lambda1 <- cv$lambda.1se
       } else {
@@ -198,20 +200,12 @@ prolong <-
       if (isTRUE(groups)) {
         groups <- rep(1:p, each = tri)
       }
-      # cv <- gglasso::cv.gglasso(
-      #   Xaug,
-      #   Yaug,
-      #   intercept = F,
-      #   group = groups,
-      #   foldid = foldids
-      # )
       if (is.null(lambda1)) {
         cv <- cv.gglasso_prolong(
           Xaug,
           Yaug,
           group = groups,
-          foldid = foldids,
-          pred.loss = "L2",
+          foldid = foldids
         )
         lambda1 <- cv$lambda.1se
       } else {
