@@ -11,7 +11,7 @@ A 3-D numeric array with n = 15 rows, p = 100 columns, and t = 4 slices
 }
 }
 \usage{
-sim_metabs
+data(sim_metabs)
 }
 \description{
 A 15x100x4 array containing 20 simulated target metabolites and 80 simulated

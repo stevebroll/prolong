@@ -7,6 +7,8 @@
 #'
 #' @format ## `sim_metabs`
 #' A 3-D numeric array with n = 15 rows, p = 100 columns, and t = 4 slices
+#'
+#' @usage data(sim_metabs)
 
 "sim_metabs"
 
@@ -18,6 +20,9 @@
 #'
 #' @format ## `sim_outcome`
 #' A numeric matrix with n = 15 rows and t = 4 columns
+#'
+#' @usage data(sim_metabs)
+
 
 
 "sim_outcome"
