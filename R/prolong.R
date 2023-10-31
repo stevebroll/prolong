@@ -177,7 +177,6 @@ prolong <-
           Xaug,
           Yaug,
           foldid = foldids,
-          grouped = F,
           intercept = F
         )
         lambda1 <- cv$lambda.1se

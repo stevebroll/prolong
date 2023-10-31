@@ -412,6 +412,7 @@ cv.glmnet_prolong <-
            gamma = c(0, 0.25, 0.5, 0.75, 1),
            relax = FALSE,
            trace.it = 0,
+           grouped = FALSE,
            ...) {
     type.measure <- match.arg(type.measure)
     alignment <- match.arg(alignment)
