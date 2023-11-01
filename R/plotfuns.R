@@ -203,7 +203,7 @@ delta_scatter <- function(x,
           "Variable 2"
         )
     } else {
-      c(
+      colnames(rmat) <- c(
         paste(timediff1, "Correlations"),
         paste(timediff2, "Correlations"),
         "Variable 1",
