@@ -29,8 +29,8 @@ delta_heatmap <- function(x,
                           timediff = "2-1",
                           interactive = TRUE,
                           grayscale = FALSE) {
-  t1 <- unlist(strsplit(timediff, "-"))[1]
-  t2 <- unlist(strsplit(timediff, "-"))[2]
+  t1 <- as.numeric(unlist(strsplit(timediff, "-"))[1])
+  t2 <- as.numeric(unlist(strsplit(timediff, "-"))[2])
   x1 <- x[, , t2] - x[, , t1]
   rr1 <- abs(stats::cor(x1))
   cols <- grDevices::hcl.colors(100, palette = "viridis")
@@ -107,8 +107,8 @@ plot_trajectories <-
       plotdat[(i - 1) * t + seq(t), ] <- t(x[i, varlist, ])
     }
     colnames(plotdat) <- colnames(x)[varlist]
-    if(is.null(timelabs)){
-      timelabs = 1:t
+    if (is.null(timelabs)) {
+      timelabs <- 1:t
     }
     time <- factor(rep(timelabs, n), levels = timelabs)
     id <- rep(1:n, each = t)
@@ -169,12 +169,12 @@ delta_scatter <- function(x,
                           digits = 3) {
   p <- ncol(x)
 
-  t1 <- unlist(strsplit(timediff1, "-"))[1]
-  t2 <- unlist(strsplit(timediff1, "-"))[2]
+  t1 <- as.numeric(unlist(strsplit(timediff1, "-"))[1])
+  t2 <- as.numeric(unlist(strsplit(timediff1, "-"))[2])
   x1 <- x[, , t2] - x[, , t1]
 
-  t1 <- unlist(strsplit(timediff2, "-"))[1]
-  t2 <- unlist(strsplit(timediff2, "-"))[2]
+  t1 <- as.numeric(unlist(strsplit(timediff2, "-"))[1])
+  t2 <- as.numeric(unlist(strsplit(timediff2, "-"))[2])
   x2 <- x[, , t2] - x[, , t1]
 
   corr1 <- stats::cor(x1)
@@ -210,18 +210,21 @@ delta_scatter <- function(x,
         "Variable 2"
       )
     }
-    name <- colnames(rmat)[1:2]
+    name1 <- colnames(rmat)[1]
+    name2 <- colnames(rmat)[2]
     p <- ggplot2::ggplot(
       data = rmat,
       ggplot2::aes(
-        x = rlang::.data[[name[1]]],
-        y = rlang::.data[[name[2]]],
+        x = get(name1),
+        y = get(name2),
         text = c(paste(
           "Variable 1:", rmat[, 3], "\nVariable 2:", rmat[, 4]
         ))
       )
     ) +
-      ggplot2::geom_point(size = .5)
+      ggplot2::geom_point(size = .5) +
+      ggplot2::xlab(name1) +
+      ggplot2::ylab(name2)
     if (interactive) {
       p <- p %>% plotly::toWebGL()
       plotly::ggplotly(p) %>% plotly::layout(hoverlabel = list(align = "left"))
@@ -229,8 +232,8 @@ delta_scatter <- function(x,
       p
     }
   } else {
-    t1 <- unlist(strsplit(timediff3, "-"))[1]
-    t2 <- unlist(strsplit(timediff3, "-"))[2]
+    t1 <- as.numeric(unlist(strsplit(timediff3, "-"))[1])
+    t2 <- as.numeric(unlist(strsplit(timediff3, "-"))[2])
     x3 <- x[, , t2] - x[, , t1]
 
     corr3 <- stats::cor(x3)
@@ -335,7 +338,7 @@ delta_scatter <- function(x,
 #' @examples
 #' \dontrun{
 #' delta_network(Xarray)
-#' delta_network(Xarray, timediff = '4-2', corr_thresh = .9, method = 'spearman')
+#' delta_network(Xarray, timediff = "4-2", corr_thresh = .9, method = "spearman")
 #' }
 delta_network <- function(x,
                           timediff = "2-1",
@@ -343,8 +346,8 @@ delta_network <- function(x,
                           corr_thresh = 0.75,
                           interactive = TRUE,
                           method = c("pearson", "kendall", "spearman")) {
-  t1 <- unlist(strsplit(timediff, "-"))[1]
-  t2 <- unlist(strsplit(timediff, "-"))[2]
+  t1 <- as.numeric(unlist(strsplit(timediff, "-"))[1])
+  t2 <- as.numeric(unlist(strsplit(timediff, "-"))[2])
   x1 <- x[, , t2] - x[, , t1]
   if (partial) {
     rr1 <- abs(ppcor::pcor(x1, method = method)$estimate)
@@ -353,7 +356,7 @@ delta_network <- function(x,
   }
   colnames(rr1) <- rownames(rr1) <- colnames(x)
   diag(rr1) <- 0
-  rr1[which(rr1) > corr_thresh] <- 0
+  rr1[which(rr1 < corr_thresh)] <- 0
   g1 <-
     igraph::graph_from_adjacency_matrix(rr1, mode = "undirected", weighted = TRUE)
   igraph::V(g1)$name <- colnames(x)
