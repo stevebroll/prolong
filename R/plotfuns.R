@@ -258,7 +258,7 @@ plot_trajectories <-
     if (is.null(object) & is.null(selected)) {
       stop("Either a `prolong` model object or list of variable names must be supplied")
     }
-    if (is.null(object) & !("prolong" %in% class(object))) {
+    if (!is.null(object) & !("prolong" %in% class(object))) {
       stop("Model object must be of class `prolong`")
     }
     if (!is.null(object)) {
