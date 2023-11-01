@@ -1,3 +1,141 @@
+#' Interactive Heatmaps for Delta-Scale Pairwise Correlations
+#'
+#' @description
+#' `delta_heatmap()` is designed to take an \eqn{n \times p \times t} array
+#' and display a heatmap to visualize the observed delta-scalecorrelation
+#' matrix. This delta-scale correlation matrix is used in the `prolong` model as
+#' the adjacency matrix for the graph whose laplacian is used in the (group)
+#' lasso + laplacian penalty used.
+#'
+#' @inheritParams prolong
+#' @param timediff Pair of time points to use in heatmap. Should be in format `'t2-t1'`
+#' @param interactive If `TRUE`, a shiny app will open in browser that will display an interactive version of the heatmap where sub-heatmaps can be selected for display
+#' @param grayscale If `TRUE` the viridis colors will be desaturated to grayscale
+#'
+#' @return A heatmap, possibly interactive in a shiny app
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' delta_heatmap(Xarray)
+#' delta_heatmap(Xarray, timediff = "4-2", interactive = F, grayscale = T)
+#' }
+#'
+#' @references
+#' \insertRef{CH2}{prolong}
+#' \insertRef{CH3}{prolong}
+delta_heatmap <- function(x,
+                          timediff = "2-1",
+                          interactive = TRUE,
+                          grayscale = FALSE) {
+  t1 <- unlist(strsplit(timediff, "-"))[1]
+  t2 <- unlist(strsplit(timediff, "-"))[2]
+  x1 <- x[, , t2] - x[, , t1]
+  rr1 <- abs(stats::cor(x1))
+  cols <- grDevices::hcl.colors(100, palette = "viridis")
+  if (grayscale) {
+    cols <- colorspace::desaturate(cols)
+  }
+  ht <- complexheatmap.2(
+    rr1,
+    distfun = function(v) {
+      stats::as.dist(1 - v)
+    },
+    col = cols,
+    trace = "none",
+    symm = T,
+    keysize = .5,
+    offsetRow = 0,
+    offsetCol = 0
+  )
+  if (interactive) {
+    InteractiveComplexHeatmap::htShiny(ht)
+  } else {
+    ht
+  }
+}
+
+#' Automatically Plot Trajectories of Variables Selected by `prolong()`
+#'
+#' @inheritParams delta_scatter
+#' @param object A `prolong` model object. Can be left `NULL` if `selected` is provided
+#' @param selected A character list of variable names or a numeric index of variables of interest whose trajectories are to be plotted. Can be left `NULL` if object is provided
+#' @param colors Either a single color to plot all trajectories or an n length vector with a color for each subject
+#' @param timelabs Optional numeric or character vector of labels for the t time points. If left `NULL`, 1:t will be used
+#'
+#' @return A 2d sequence of trajectory plots from facet_wrap()
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' promod <- prolong(Ymatrix, Xarray)
+#' plot_trajectories(Xarray, promod)
+#' plot_trajectories(Xarray, selected = promod$selected)
+#' }
+plot_trajectories <-
+  function(x,
+           object = NULL,
+           selected = NULL,
+           timelabs = NULL,
+           colors = "#00BFC4") {
+    if (is.null(object) & is.null(selected)) {
+      stop("Either a `prolong` model object or list of variable names must be supplied")
+    }
+    if (!is.null(object) & !("prolong" %in% class(object))) {
+      stop("Model object must be of class `prolong`")
+    }
+    if (!is.null(object)) {
+      varnames <- object$selected
+      varlist <- which(varnames %in% colnames(x))
+    } else if (!is.null(selected)) {
+      if (is.character(selected)) {
+        varnames <- selected
+        varlist <- which(varnames %in% colnames(x))
+      } else if (is.numeric(selected)) {
+        varlist <- selected
+      } else {
+        stop("selected must be a numeric or character vector")
+      }
+    }
+
+
+    n <- nrow(x)
+    t <- dim(x)[3]
+    plotdat <- matrix(NA, n * t, length(varlist))
+    for (i in 1:n) {
+      plotdat[(i - 1) * t + seq(t), ] <- t(x[i, varlist, ])
+    }
+    colnames(plotdat) <- colnames(x)[varlist]
+    if(is.null(timelabs)){
+      timelabs = 1:t
+    }
+    time <- factor(rep(timelabs, n), levels = timelabs)
+    id <- rep(1:n, each = t)
+    if (is.null(colors)) {
+      colors <- "#00BFC4"
+    } else if (length(colors == 1)) {
+      colors <- colors
+    } else if (length(colors == n)) {
+      colors <- rep(colors, each = t)
+    } else {
+      stop(
+        "colors should either a single color for all lines or an n length
+         vector with a color for each subject"
+      )
+    }
+    meltdf <- cbind(reshape2::melt(plotdat)[, 3:2], time, id)
+    colnames(meltdf)[2] <- "varname"
+    value <- meltdf$value # to avoid check notes
+    p <-
+      ggplot2::ggplot(meltdf, ggplot2::aes(x = time, y = value, group = id)) +
+      ggplot2::geom_line(color = colors)
+    p + ggplot2::facet_wrap("varname", scales = "free")
+  }
+
+
+
+
 #' 2D and 3D Scatter Plots for Delta-Scale Pairwise Correlations
 #'
 #' @inheritParams prolong
@@ -179,135 +317,6 @@ delta_scatter <- function(x,
   }
 }
 
-
-
-#' Interactive Heatmaps for Delta-Scale Pairwise Correlations
-#'
-#' @inheritParams prolong
-#' @param timediff Pair of time points to use in heatmap. Should be in format `'t2-t1'`
-#' @param interactive If `TRUE`, a shiny app will open in browser that will display an interactive version of the heatmap where sub-heatmaps can be selected for display
-#' @param grayscale If `TRUE` the viridis colors will be desaturated to grayscale
-#'
-#' @return A heatmap, possibly interactive in a shiny app
-#'
-#' @export
-#'
-#' @examples
-#' \dontrun{
-#' delta_heatmap(Xarray)
-#' delta_heatmap(Xarray, timediff = "4-2", interactive = F, grayscale = T)
-#' }
-#'
-#' @references
-#' \insertRef{CH2}{prolong}
-#' \insertRef{CH3}{prolong}
-delta_heatmap <- function(x,
-                          timediff = "2-1",
-                          interactive = TRUE,
-                          grayscale = FALSE) {
-  t1 <- unlist(strsplit(timediff, "-"))[1]
-  t2 <- unlist(strsplit(timediff, "-"))[2]
-  x1 <- x[, , t2] - x[, , t1]
-  rr1 <- abs(stats::cor(x1))
-  cols <- grDevices::hcl.colors(100, palette = "viridis")
-  if (grayscale) {
-    cols <- colorspace::desaturate(cols)
-  }
-  ht <- complexheatmap.2(
-    rr1,
-    distfun = function(v) {
-      stats::as.dist(1 - v)
-    },
-    col = cols,
-    trace = "none",
-    symm = T,
-    keysize = .5,
-    offsetRow = 0,
-    offsetCol = 0
-  )
-  if (interactive) {
-    InteractiveComplexHeatmap::htShiny(ht)
-  } else {
-    ht
-  }
-}
-
-#' Automatically Plot Trajectories of Variables Selected by `prolong()`
-#'
-#' @inheritParams delta_scatter
-#' @param object A `prolong` model object. Can be left `NULL` if `selected` is provided
-#' @param selected A character list of variable names or a numeric index of variables of interest whose trajectories are to be plotted. Can be left `NULL` if object is provided
-#' @param colors Either a single color to plot all trajectories or an n length vector with a color for each subject
-#' @param timelabs Optional numeric or character vector of labels for the t time points. If left `NULL`, 1:t will be used
-#'
-#' @return A 2d sequence of trajectory plots from facet_wrap()
-#' @export
-#'
-#' @examples
-#' \dontrun{
-#' promod <- prolong(Ymatrix, Xarray)
-#' plot_trajectories(Xarray, promod)
-#' plot_trajectories(Xarray, selected = promod$selected)
-#' }
-plot_trajectories <-
-  function(x,
-           object = NULL,
-           selected = NULL,
-           timelabs = NULL,
-           colors = "#00BFC4") {
-    if (is.null(object) & is.null(selected)) {
-      stop("Either a `prolong` model object or list of variable names must be supplied")
-    }
-    if (!is.null(object) & !("prolong" %in% class(object))) {
-      stop("Model object must be of class `prolong`")
-    }
-    if (!is.null(object)) {
-      varnames <- object$selected
-      varlist <- which(varnames %in% colnames(x))
-    } else if (!is.null(selected)) {
-      if (is.character(selected)) {
-        varnames <- selected
-        varlist <- which(varnames %in% colnames(x))
-      } else if (is.numeric(selected)) {
-        varlist <- selected
-      } else {
-        stop("selected must be a numeric or character vector")
-      }
-    }
-
-
-    n <- nrow(x)
-    t <- dim(x)[3]
-    plotdat <- matrix(NA, n * t, length(varlist))
-    for (i in 1:n) {
-      plotdat[(i - 1) * t + seq(t), ] <- t(x[i, varlist, ])
-    }
-    colnames(plotdat) <- colnames(x)[varlist]
-    if(is.null(timelabs)){
-      timelabs = 1:t
-    }
-    time <- factor(rep(timelabs, n), levels = timelabs)
-    id <- rep(1:n, each = t)
-    if (is.null(colors)) {
-      colors <- "#00BFC4"
-    } else if (length(colors == 1)) {
-      colors <- colors
-    } else if (length(colors == n)) {
-      colors <- rep(colors, each = t)
-    } else {
-      stop(
-        "colors should either a single color for all lines or an n length
-         vector with a color for each subject"
-      )
-    }
-    meltdf <- cbind(reshape2::melt(plotdat)[, 3:2], time, id)
-    colnames(meltdf)[2] <- "varname"
-    value <- meltdf$value # to avoid check notes
-    p <-
-      ggplot2::ggplot(meltdf, ggplot2::aes(x = time, y = value, group = id)) +
-      ggplot2::geom_line(color = colors)
-    p + ggplot2::facet_wrap("varname", scales = "free")
-  }
 
 
 

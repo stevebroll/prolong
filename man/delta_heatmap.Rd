@@ -19,7 +19,11 @@ delta_heatmap(x, timediff = "2-1", interactive = TRUE, grayscale = FALSE)
 A heatmap, possibly interactive in a shiny app
 }
 \description{
-Interactive Heatmaps for Delta-Scale Pairwise Correlations
+\code{delta_heatmap()} is designed to take an \eqn{n \times p \times t} array
+and display a heatmap to visualize the observed delta-scalecorrelation
+matrix. This delta-scale correlation matrix is used in the \code{prolong} model as
+the adjacency matrix for the graph whose laplacian is used in the (group)
+lasso + laplacian penalty used.
 }
 \examples{
 \dontrun{
