@@ -136,7 +136,7 @@ plot_trajectories <-
 
 
 
-#' 2D and 3D Scatter Plots for Delta-Scale Pairwise Correlations
+#' Experimental 2D and 3D Scatter Plots for Delta-Scale Pairwise Correlations
 #'
 #' @inheritParams prolong
 #' @param timediff1 First pair of time points for the x-axis of the scatter plot. Should be in format `'t2-t1'`
@@ -323,7 +323,7 @@ delta_scatter <- function(x,
 
 
 
-#' Network Plots for Delta-Scale Pairwise Correlations
+#' Experimental Network Plots for Delta-Scale Pairwise (Partial) Correlations
 #'
 #' @inheritParams prolong
 #' @inheritParams delta_heatmap

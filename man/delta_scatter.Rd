@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotfuns.R
 \name{delta_scatter}
 \alias{delta_scatter}
-\title{2D and 3D Scatter Plots for Delta-Scale Pairwise Correlations}
+\title{Experimental 2D and 3D Scatter Plots for Delta-Scale Pairwise Correlations}
 \usage{
 delta_scatter(
   x,
@@ -33,7 +33,7 @@ delta_scatter(
 Either a 2D or 3D scatterplot
 }
 \description{
-2D and 3D Scatter Plots for Delta-Scale Pairwise Correlations
+Experimental 2D and 3D Scatter Plots for Delta-Scale Pairwise Correlations
 }
 \examples{
 \dontrun{

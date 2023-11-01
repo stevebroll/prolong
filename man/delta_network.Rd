@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotfuns.R
 \name{delta_network}
 \alias{delta_network}
-\title{Network Plots for Delta-Scale Pairwise Correlations}
+\title{Experimental Network Plots for Delta-Scale Pairwise (Partial) Correlations}
 \usage{
 delta_network(
   x,
@@ -30,11 +30,11 @@ delta_network(
 Either an interactive \code{visNetwork} or static \code{igraph} plot
 }
 \description{
-Network Plots for Delta-Scale Pairwise Correlations
+Experimental Network Plots for Delta-Scale Pairwise (Partial) Correlations
 }
 \examples{
 \dontrun{
 delta_network(Xarray)
-delta_network(Xarray, timediff = '4-2', corr_thresh = .9, method = 'spearman')
+delta_network(Xarray, timediff = "4-2", corr_thresh = .9, method = "spearman")
 }
 }
