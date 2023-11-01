@@ -29,13 +29,13 @@ The `prolong` package has two primary objectives:
 
 For the first objective, the `prolong()` function takes an $n \times t$ matrix of clinical outcomes and a $n \times p \times t$ array of omics or omics-like variables and fits a model with a network penalty via laplacian matrix together with either a lasso or group lassa penalty. Hyperparameters can either be supplied or automatically estimated internally in `prolong()`. The `plot_trajectories()` function takes the output from `prolong()` and displays a grid of the trajectories of the variables selected by the (group) lasso + laplacian model. 
 
-For the second objective, the `prolong` package has several plot functions that take the same $n \times p \times t$ array of omics or omics-like variables and look at the pairwise correlations of the first-differenced, or delta-scale, omics or omics-like data. The following functions are currently supported: 
-
-* `delta_scatter()` - 2D or 3D scatterplots 
+For the second objective, the `prolong` package will eventually sypport several plot functions that take the same $n \times p \times t$ array of omics or omics-like variables and look at the pairwise correlations of the first-differenced, or delta-scale, omics or omics-like data. The following function is currently supported: 
 
 * `delta_heatmap()` - Interactive subsettable heatmaps
 
-* `delta_network()` - Interactive network visualizations
+<!-- * `delta_scatter()` - 2D or 3D scatterplots  -->
+
+<!-- * `delta_network()` - Interactive network visualizations -->
 
 The `prolong` package comes with example data that is simulated to imitate the motivating data for the `prolong` methodology. There are two components that can be accessed with the `load()` function: 
 
@@ -110,7 +110,7 @@ plot_trajectories(sim_metabs, promod_ll)
 Let's repeat the process but with the group lasso + laplacian model. The default is to automatically create 1 group for each of the $p$ variables, with the different time point observations as replications within that group.
 
 ```{r, cache = T}
-promod_gll = prolong(sim_metabs, sim_outcome, lambda2 = 1.82, lambdar = 0.5, foldid = c(rep(rep(1:5,each = 3),3)))
+promod_gll = prolong(sim_metabs, sim_outcome, lambda2 = 0.2374421, lambdar = 0.2229402)
 ```
 
 
@@ -120,21 +120,21 @@ plot_trajectories(sim_metabs, promod_gll)
 
 # Correlation Plots
 
-## `delta_scatter()` Function
-
-```{r, eval = F}
-delta_scatter(sim_metabs)
-```
 
 ## `delta_heatmap()` Function
 
-```{r, eval = F}
+The `delta_heatmap()` function takes the $n\times p \times t$ array of variables and produces a heatmap of the delta-scale absolute correlations to visualize  By default, `delta_heatmap()` will open a window to display an interactive Shiny app with the option to view a selected subsection of the heatmap.
+
+```{r, eval = T}
 delta_heatmap(sim_metabs)
 ```
 
-## `delta_network()` Function
+If `interactive = FALSE`, then a static heatmap will instead be produced. We can also change the time points whose difference we take before computing the absolute correlation matrix.
 
-```{r, eval = F}
-delta_network(sim_metabs)
+
+```{r}
+delta_heatmap(sim_metabs, timediff = '3-2', interactive = F)
 ```
+
+
 
