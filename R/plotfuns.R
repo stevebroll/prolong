@@ -282,7 +282,7 @@ plot_trajectories <-
     for (i in 1:n) {
       plotdat[(i - 1) * t + seq(t), ] <- t(x[i, varlist, ])
     }
-    colnames(plotdat) <- colnames(x)
+    colnames(plotdat) <- colnames(x)[varlist]
     if(is.null(timelabs)){
       timelabs = 1:t
     }
