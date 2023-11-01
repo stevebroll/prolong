@@ -175,7 +175,7 @@ prolong <-
         cv <- cv.glmnet_prolong(
           Xaug,
           Yaug,
-          foldid = foldids        )
+          foldid = foldids)
         lambda1 <- cv$lambda.1se
       } else {
         lambda1 <- lambda1
@@ -184,7 +184,7 @@ prolong <-
         Xaug,
         Yaug,
         intercept = F,
-        lambda = cv$lambda.1se
+        lambda = lambda1
       )
       coefs <- stats::coef(llmod)[-1, ]
       coefs <- coefs / (sqrt(1 + lambda2))
