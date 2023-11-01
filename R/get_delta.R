@@ -4,6 +4,7 @@ get_delta_x <- function(x, n, p, t) {
     DXarray[, , k] <-
       scale(t(x[, , k + 1]) - t(x[, , k]), center = F) / sqrt(n - 1)
   }
+  colnames(DXarray) = colnames(x)
 
   DX <- matrix(0, nrow = n * (t - 1), ncol = sum(1:(t - 1)) * p)
   rowvec <- 1:n

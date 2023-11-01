@@ -98,14 +98,12 @@ prolong <-
       )
     }
     if (is.null(groups) | isFALSE(groups)) {
-      message("No groups supplied r suggested, ordinary lasso will be used
-              instead of group lasso")
+      message("No groups supplied or suggested, ordinary lasso will be used instead of group lasso")
     }
     if (!is.null(groups) &
       groups != sort(groups)) {
       stop(
-        "Groups must consist of consecutive columns, with group numbers counting
-        from 1 to # groups"
+        "Groups must consist of consecutive columns, with group numbers counting from 1 to # groups"
       )
     }
     n <- nrow(x)
@@ -115,7 +113,7 @@ prolong <-
 
     DXout <- get_delta_x(x, n, p, t)
     DY <- get_delta_y(y, n, t)
-    cormat <- get_cor_matrix(DXout$DXarray)
+    cormat <- get_cor_matrix(DXout$DXarray, n, p, t)
     graph <-
       igraph::graph_from_adjacency_matrix(cormat,
         mode = "undirected",
@@ -151,7 +149,7 @@ prolong <-
       opt <- stats::optim(optimvals, minfun)
       lambda2 <- opt$par[1]
       lambdar <- opt$par[2]
-      print(paste("Lambda2 = ", lambda2, "\nLambdaR = ", lambdar, sep = ""))
+      cat(paste("Lambda2 = ", lambda2, "\nLambdaR = ", lambdar, sep = ""))
     }
 
     # get incidence matrix
@@ -161,6 +159,7 @@ prolong <-
     tri <- t * (t - 1) / 2
     Xaug <-
       (1 / sqrt(1 + lambda2)) * rbind(DXout$DX, sqrt(lambda2) * t(incidence))
+    colnames(Xaug) <- rep(colnames(DXout$DXarray), tri)
     Xaug <-
       Xaug[, rep((1:p), each = tri) + rep(seq(0, p * (tri - 1), p), p)]
     Yaug <- c(DY, rep(0, nrow(Xaug) - (t - 1) * n))
@@ -176,9 +175,7 @@ prolong <-
         cv <- cv.glmnet_prolong(
           Xaug,
           Yaug,
-          foldid = foldids,
-          intercept = F
-        )
+          foldid = foldids        )
         lambda1 <- cv$lambda.1se
       } else {
         lambda1 <- lambda1
@@ -189,9 +186,8 @@ prolong <-
         intercept = F,
         lambda = cv$lambda.1se
       )
-      coefs <- stats::coef(gllmod)[-1, ]
+      coefs <- stats::coef(llmod)[-1, ]
       coefs <- coefs / (sqrt(1 + lambda2))
-      names(coefs) <- rep(colnames(DXout$DXarray), each = tri)
       npasses <- llmod$npasses
       jerr <- llmod$jerr
       call <- llmod$call
@@ -219,15 +215,14 @@ prolong <-
       )
       coefs <- stats::coef(gllmod)[-1, ]
       coefs <- coefs / (sqrt(1 + lambda2))
-      names(coefs) <- rep(colnames(DXout$DXarray), each = tri)
       npasses <- gllmod$npasses
       jerr <- gllmod$jerr
       call <- gllmod$call
     }
 
+    names(coefs) <- colnames(Xaug)
     df <- length(which(coefs != 0))
     selected <- unique(names(coefs)[which(coefs != 0)])
-
     output <- list(
       "beta" = as.matrix(coefs),
       "selected" = selected,

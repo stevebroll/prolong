@@ -1,4 +1,34 @@
-# unexported gglasso function
+# unexported gglasso functions
+
+cv.ls <- function (outlist, lambda, x, y, foldid, pred.loss, delta)
+{
+  typenames <- c(L2 = "Least-Squared loss", L1 = "Absolute loss")
+  if (pred.loss == "default")
+    pred.loss <- "L2"
+  if (!match(pred.loss, c("L2", "L1"), FALSE)) {
+    warning("Only 'L2' and 'L1'  available for least squares models; 'L2' used")
+    pred.loss <- "L2"
+  }
+  predmat <- matrix(NA, length(y), length(lambda))
+  nfolds <- max(foldid)
+  nlams <- double(nfolds)
+  for (i in seq(nfolds)) {
+    which <- foldid == i
+    fitobj <- outlist[[i]]
+    preds <- predict(fitobj, x[which, , drop = FALSE])
+    nlami <- length(outlist[[i]]$lambda)
+    predmat[which, seq(nlami)] <- preds
+    nlams[i] <- nlami
+  }
+  cvraw <- switch(pred.loss, L2 = (y - predmat)^2, L1 = abs(y -
+                                                              predmat))
+  N <- length(y) - apply(is.na(predmat), 2, sum)
+  cvm <- apply(cvraw, 2, mean, na.rm = TRUE)
+  cvsd <- sqrt(apply(scale(cvraw, cvm, FALSE)^2, 2, mean,
+                     na.rm = TRUE)/(N - 1))
+  list(cvm = cvm, cvsd = cvsd, name = typenames[pred.loss])
+}
+
 
 getmin <- function(lambda, cvm, cvsd) {
   cvmin <- min(cvm)
@@ -58,9 +88,9 @@ cv.gglasso_prolong <-
         intercept = F
       )
     }
-    fun <-
-      paste("gglasso::cv", class(gglasso.object)[[2]], sep = ".")
-    cvstuff <- do.call(fun, list(
+    # fun <-
+    #   paste("gglasso::cv", class(gglasso.object)[[2]], sep = ".")
+    cvstuff <- do.call(cv.ls, list(
       outlist, lambda, x, y, foldid,
       pred.loss, delta
     ))
@@ -234,6 +264,32 @@ cvstats <-
       nzero = nz
     )
   }
+
+cv.elnet <- function (predmat, y, type.measure, weights, foldid, grouped)
+{
+  N = length(y) - apply(is.na(predmat), 2, sum)
+  cvraw = switch(type.measure, mse = (y - predmat)^2, deviance = (y -
+                                                                    predmat)^2, mae = abs(y - predmat))
+  list(cvraw = cvraw, weights = weights, N = N, type.measure = type.measure,
+       grouped = grouped)
+}
+
+getOptcv.glmnet <- function (lambda, cvm, cvsd, cvname)
+{
+  if (match(cvname, c("AUC", "C-index"), 0))
+    cvm = -cvm
+  cvmin = min(cvm, na.rm = TRUE)
+  idmin = cvm <= cvmin
+  lambda.min = max(lambda[idmin], na.rm = TRUE)
+  idmin = match(lambda.min, lambda)
+  semin = (cvm + cvsd)[idmin]
+  id1se = cvm <= semin
+  lambda.1se = max(lambda[id1se], na.rm = TRUE)
+  id1se = match(lambda.1se, lambda)
+  index = matrix(c(idmin, id1se), 2, 1, dimnames = list(c("min",
+                                                          "1se"), "Lambda"))
+  list(lambda.min = lambda.min, lambda.1se = lambda.1se, index = index)
+}
 
 
 cv.glmnet.raw <-
