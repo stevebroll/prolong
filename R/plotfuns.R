@@ -87,11 +87,11 @@ plot_trajectories <-
     }
     if (!is.null(object)) {
       varnames <- object$selected
-      varlist <- which(varnames %in% colnames(x))
+      varlist <- which(colnames(x) %in% varnames)
     } else if (!is.null(selected)) {
       if (is.character(selected)) {
         varnames <- selected
-        varlist <- which(varnames %in% colnames(x))
+        varlist <- which(colnames(x) %in% varnames)
       } else if (is.numeric(selected)) {
         varlist <- selected
       } else {
