@@ -2,7 +2,7 @@
 title: "Experimental prolong Functions"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{prolong-experimental}
+  %\VignetteIndexEntry{Experimental prolong Functions}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

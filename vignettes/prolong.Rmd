@@ -3,7 +3,7 @@ title: "Getting Started with prolong"
 author: "Steve Broll"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{prolong}
+  %\VignetteIndexEntry{Getting Started with prolong}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -97,8 +97,8 @@ plot_trajectories(sim_metabs, selected = 1:20)
 
 Now that we have loaded our x array and y matrix, we can fit a lasso + laplacian and a group lasso + laplacian model. To fit the (non-group) lasso + laplacian model, we can specify `groups = FALSE`. If we don't specify any of the model hyperparameters they will be automatically found.
 
-```{r, cache = T}
-promod_ll = prolong(sim_metabs, sim_outcome, groups = FALSE, lambda2 = 0.2374421, lambdar = 0.2229402)
+```{r, cache = F}
+promod_ll = prolong(sim_metabs, sim_outcome, groups = FALSE)
 ```
 
 Now that we have the results, we can quickly and easily visualize the selected variables with `plot_trajectories()`.
@@ -109,8 +109,8 @@ plot_trajectories(sim_metabs, promod_ll)
 
 Let's repeat the process but with the group lasso + laplacian model. The default is to automatically create 1 group for each of the $p$ variables, with the different time point observations as replications within that group.
 
-```{r, cache = T}
-promod_gll = prolong(sim_metabs, sim_outcome, lambda2 = 0.2374421, lambdar = 0.2229402)
+```{r, cache = F}
+promod_gll = prolong(sim_metabs, sim_outcome)
 ```
 
 
