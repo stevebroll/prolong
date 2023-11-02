@@ -50,7 +50,7 @@ delta_heatmap <- function(x,
     offsetCol = 0
   )
   if (interactive) {
-    InteractiveComplexHeatmap::htShiny(ht)
+    InteractiveComplexHeatmap::htShiny(ht, title = paste(timediff, 'Heatmap'), decription = '')
   } else {
     ht
   }
