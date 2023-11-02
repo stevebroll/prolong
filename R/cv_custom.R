@@ -15,7 +15,7 @@ cv.ls <- function (outlist, lambda, x, y, foldid, pred.loss, delta)
   for (i in seq(nfolds)) {
     which <- foldid == i
     fitobj <- outlist[[i]]
-    preds <- predict(fitobj, x[which, , drop = FALSE])
+    preds <- stats::predict(fitobj, x[which, , drop = FALSE])
     nlami <- length(outlist[[i]]$lambda)
     predmat[which, seq(nlami)] <- preds
     nlams[i] <- nlami

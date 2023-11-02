@@ -109,7 +109,6 @@ prolong <-
     n <- nrow(x)
     p <- ncol(x)
     t <- ncol(y)
-    g <- length(unique(groups))
 
     DXout <- get_delta_x(x, n, p, t)
     DY <- get_delta_y(y, n, t)
@@ -131,16 +130,16 @@ prolong <-
       YTZ <- crossprod(DY, DXout$DX)
 
       minfun <- function(l) {
-        n * log(crossprod(DY, DY) - YTZ %*% solve(abs(l[1]) *
+        n * log(crossprod(DY, DY) - YTZ %*% solve(l[1] *
           (lap + diag(l[2], nrow(
             lap
           )))
-          + ZTZ) %*% ZTY) + log(abs(det(abs(l[1]) *
+          + ZTZ) %*% ZTY) + log(abs(det(l[1] *
           (
             lap + diag(l[2], nrow(lap))
           )
           + ZTZ))) -
-          log(abs(det(abs(l[1]) *
+          log(abs(det(l[1] *
 
             (
               lap + diag(l[2], nrow(lap))
@@ -149,7 +148,7 @@ prolong <-
       opt <- stats::optim(optimvals, minfun)
       lambda2 <- opt$par[1]
       lambdar <- opt$par[2]
-      cat(paste("Lambda2 = ", lambda2, "\nLambdaR = ", lambdar, sep = ""))
+      cat(paste("lambda2 = ", lambda2, "\nlambdar = ", lambdar, sep = ""))
     }
 
     # get incidence matrix

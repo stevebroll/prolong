@@ -2,7 +2,7 @@ get_delta_x <- function(x, n, p, t) {
   DXarray <- array(0, dim = c(n, p, t - 1))
   for (k in 1:(t - 1)) {
     DXarray[, , k] <-
-      scale(t(x[, , k + 1]) - t(x[, , k]), center = F) / sqrt(n - 1)
+      scale(x[, , k + 1] - x[, , k], center = F) / sqrt(n - 1)
   }
   colnames(DXarray) = colnames(x)
 
