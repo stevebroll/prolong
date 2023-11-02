@@ -12,8 +12,7 @@ vignette: >
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
-)
-
+  )
 ```
 
 ```{r,eval = TRUE}
@@ -103,18 +102,20 @@ promod_ll = prolong(sim_metabs, sim_outcome, groups = FALSE)
 
 Now that we have the results, we can quickly and easily visualize the selected variables with `plot_trajectories()`.
 
-```{r, eval = F}
+```{r}
 plot_trajectories(sim_metabs, promod_ll)
 ```
 
 Let's repeat the process but with the group lasso + laplacian model. The default is to automatically create 1 group for each of the $p$ variables, with the different time point observations as replications within that group.
 
 ```{r, cache = F}
+
 promod_gll = prolong(sim_metabs, sim_outcome)
+
 ```
 
 
-```{r,eval = F}
+```{r}
 plot_trajectories(sim_metabs, promod_gll)
 ```
 
