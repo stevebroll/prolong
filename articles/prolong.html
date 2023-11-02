@@ -181,8 +181,8 @@ automatically found.</p>
 <code class="sourceCode R"><span><span class="va">promod_ll</span> <span class="op">=</span> <span class="fu"><a href="../reference/prolong.html">prolong</a></span><span class="op">(</span><span class="va">sim_metabs</span>, <span class="va">sim_outcome</span>, groups <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; No groups supplied or suggested, ordinary lasso will be used instead of group lasso</span></span>
 <span><span class="co">#&gt; lambda2 and/or lambdar missing, optimizing over both</span></span>
-<span><span class="co">#&gt; lambda2 = 1.28367853770075</span></span>
-<span><span class="co">#&gt; lambdar = 1.25922464032723</span></span></code></pre></div>
+<span><span class="co">#&gt; lambda2 = 0.220824096298615</span></span>
+<span><span class="co">#&gt; lambdar = 0.313412029638778</span></span></code></pre></div>
 <p>Now that we have the results, we can quickly and easily visualize the
 selected variables with <code><a href="../reference/plot_trajectories.html">plot_trajectories()</a></code>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
@@ -193,8 +193,8 @@ point observations as replications within that group.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">promod_gll</span> <span class="op">=</span> <span class="fu"><a href="../reference/prolong.html">prolong</a></span><span class="op">(</span><span class="va">sim_metabs</span>, <span class="va">sim_outcome</span><span class="op">)</span></span>
 <span><span class="co">#&gt; lambda2 and/or lambdar missing, optimizing over both</span></span>
-<span><span class="co">#&gt; lambda2 = 1.28367853770075</span></span>
-<span><span class="co">#&gt; lambdar = 1.25922464032723</span></span></code></pre></div>
+<span><span class="co">#&gt; lambda2 = 0.220824096298615</span></span>
+<span><span class="co">#&gt; lambdar = 0.313412029638778</span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_trajectories.html">plot_trajectories</a></span><span class="op">(</span><span class="va">sim_metabs</span>, <span class="va">promod_gll</span><span class="op">)</span></span></code></pre></div>
 </div>
