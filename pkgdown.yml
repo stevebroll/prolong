@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   prolong-experimental: prolong-experimental.html
   prolong: prolong.html
-last_built: 2023-11-02T19:29Z
+last_built: 2023-11-02T20:20Z
 urls:
   reference: https://stevebroll.github.io/prolong/reference
   article: https://stevebroll.github.io/prolong/articles
