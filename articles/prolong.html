@@ -187,16 +187,19 @@ automatically found.</p>
 selected variables with <code><a href="../reference/plot_trajectories.html">plot_trajectories()</a></code>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_trajectories.html">plot_trajectories</a></span><span class="op">(</span><span class="va">sim_metabs</span>, <span class="va">promod_ll</span><span class="op">)</span></span></code></pre></div>
+<p><img src="prolong_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
 <p>Let’s repeat the process but with the group lasso + laplacian model.
 The default is to automatically create 1 group for each of the <span class="math inline">\(p\)</span> variables, with the different time
 point observations as replications within that group.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">promod_gll</span> <span class="op">=</span> <span class="fu"><a href="../reference/prolong.html">prolong</a></span><span class="op">(</span><span class="va">sim_metabs</span>, <span class="va">sim_outcome</span><span class="op">)</span></span>
+<code class="sourceCode R"><span></span>
+<span><span class="va">promod_gll</span> <span class="op">=</span> <span class="fu"><a href="../reference/prolong.html">prolong</a></span><span class="op">(</span><span class="va">sim_metabs</span>, <span class="va">sim_outcome</span><span class="op">)</span></span>
 <span><span class="co">#&gt; lambda2 and/or lambdar missing, optimizing over both</span></span>
 <span><span class="co">#&gt; lambda2 = 0.220824096298615</span></span>
 <span><span class="co">#&gt; lambdar = 0.313412029638778</span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_trajectories.html">plot_trajectories</a></span><span class="op">(</span><span class="va">sim_metabs</span>, <span class="va">promod_gll</span><span class="op">)</span></span></code></pre></div>
+<p><img src="prolong_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
 </div>
 <div class="section level2">
 <h2 id="correlation-plots">Correlation Plots<a class="anchor" aria-label="anchor" href="#correlation-plots"></a>
