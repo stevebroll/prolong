@@ -30,7 +30,7 @@ These functions can produce additional visualizations but are not as soundly bac
 
 The `delta_scatter()` function can show a 2D or 3D scatterplot of pairwise delta-scale correlations to view the relationship between these pairwise correlations across time. The default is a 2D interactive scatterplot with hovertext for each point, and with fisher z-transformation applied to the pairwise correlations.
 
-```{r, eval = F, warning=FALSE}
+```{r, eval = T, warning=FALSE}
 delta_scatter(sim_metabs)
 ```
 

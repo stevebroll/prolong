@@ -226,7 +226,7 @@ delta_scatter <- function(x,
       ggplot2::xlab(name1) +
       ggplot2::ylab(name2)
     if (interactive) {
-      p <- p %>% plotly::toWebGL()
+      # p <- p %>% plotly::toWebGL()
       plotly::ggplotly(p) %>% plotly::layout(hoverlabel = list(align = "left"))
     } else {
       p
