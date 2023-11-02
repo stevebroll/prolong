@@ -128,9 +128,10 @@ prolong <-
       ZTZ <- crossprod(DXout$DX)
       ZTY <- crossprod(DXout$DX, DY)
       YTZ <- crossprod(DY, DXout$DX)
+      dn <- nrow(DXout$DX)
 
       minfun <- function(l) {
-        n * log(crossprod(DY, DY) - YTZ %*% solve(l[1] *
+        dn * log(crossprod(DY, DY) - YTZ %*% solve(l[1] *
           (lap + diag(l[2], nrow(
             lap
           )))
