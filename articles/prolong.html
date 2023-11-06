@@ -178,7 +178,7 @@ lasso + laplacian model, we can specify <code>groups = FALSE</code>. If
 we don’t specify any of the model hyperparameters they will be
 automatically found.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">promod_ll</span> <span class="op">=</span> <span class="fu"><a href="../reference/prolong.html">prolong</a></span><span class="op">(</span><span class="va">sim_metabs</span>, <span class="va">sim_outcome</span>, groups <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">promod_ll</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prolong.html">prolong</a></span><span class="op">(</span><span class="va">sim_metabs</span>, <span class="va">sim_outcome</span>, groups <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; No groups supplied or suggested, ordinary lasso will be used instead of group lasso</span></span>
 <span><span class="co">#&gt; lambda2 and/or lambdar missing, optimizing over both</span></span>
 <span><span class="co">#&gt; lambda2 = 0.220824096298615</span></span>
@@ -192,8 +192,7 @@ selected variables with <code><a href="../reference/plot_trajectories.html">plot
 The default is to automatically create 1 group for each of the <span class="math inline">\(p\)</span> variables, with the different time
 point observations as replications within that group.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="va">promod_gll</span> <span class="op">=</span> <span class="fu"><a href="../reference/prolong.html">prolong</a></span><span class="op">(</span><span class="va">sim_metabs</span>, <span class="va">sim_outcome</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">promod_gll</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prolong.html">prolong</a></span><span class="op">(</span><span class="va">sim_metabs</span>, <span class="va">sim_outcome</span><span class="op">)</span></span>
 <span><span class="co">#&gt; lambda2 and/or lambdar missing, optimizing over both</span></span>
 <span><span class="co">#&gt; lambda2 = 0.220824096298615</span></span>
 <span><span class="co">#&gt; lambdar = 0.313412029638778</span></span></code></pre></div>
@@ -214,14 +213,12 @@ By default, <code><a href="../reference/delta_heatmap.html">delta_heatmap()</a><
 an interactive Shiny app with the option to view a selected subsection
 of the heatmap.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/delta_heatmap.html">delta_heatmap</a></span><span class="op">(</span><span class="va">sim_metabs</span><span class="op">)</span></span>
-<span><span class="co">#&gt; PhantomJS not found. You can install it with webshot::install_phantomjs(). If it is installed, please make sure the phantomjs executable can be found via the PATH variable.</span></span></code></pre></div>
-<div style="width: 100% ; height: 400px ; text-align: center; box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box;" class="muted well">Shiny applications not supported in static R Markdown documents</div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/delta_heatmap.html">delta_heatmap</a></span><span class="op">(</span><span class="va">sim_metabs</span><span class="op">)</span></span></code></pre></div>
 <p>If <code>interactive = FALSE</code>, then a static heatmap will
 instead be produced. We can also change the time points whose difference
 we take before computing the absolute correlation matrix.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/delta_heatmap.html">delta_heatmap</a></span><span class="op">(</span><span class="va">sim_metabs</span>, timediff <span class="op">=</span> <span class="st">'3-2'</span>, interactive <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/delta_heatmap.html">delta_heatmap</a></span><span class="op">(</span><span class="va">sim_metabs</span>, timediff <span class="op">=</span> <span class="st">"3-2"</span>, interactive <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span></code></pre></div>
 <p><img src="prolong_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
 </div>
 </div>
