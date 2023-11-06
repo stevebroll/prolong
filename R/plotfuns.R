@@ -50,7 +50,10 @@ delta_heatmap <- function(x,
     offsetCol = 0
   )
   if (interactive) {
-    InteractiveComplexHeatmap::htShiny(ht, title = paste(timediff, 'Heatmap'), description = '')
+    InteractiveComplexHeatmap::htShiny(ht,
+      title = paste(timediff, "Heatmap"),
+      description = ""
+    )
   } else {
     ht
   }
@@ -227,7 +230,9 @@ delta_scatter <- function(x,
       ggplot2::ylab(name2)
     if (interactive) {
       # p <- p %>% plotly::toWebGL()
-      plotly::ggplotly(p) %>% plotly::layout(hoverlabel = list(align = "left"))
+      plotly::ggplotly(p) %>%
+        plotly::layout(hoverlabel = list(align = "left")) %>%
+        plotly::partial_bundle()
     } else {
       p
     }
@@ -350,7 +355,8 @@ delta_network <- function(x,
   t2 <- as.numeric(unlist(strsplit(timediff, "-"))[2])
   x1 <- x[, , t2] - x[, , t1]
   if (partial) {
-    rr1 <- abs(ppcor::pcor(x1, method = method)$estimate)
+    suppressWarnings(rr1 <-
+      abs(ppcor::pcor(x1, method = method)$estimate))
   } else {
     rr1 <- abs(stats::cor(x1, method = method))
   }
