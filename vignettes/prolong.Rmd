@@ -12,7 +12,7 @@ vignette: >
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
-  )
+)
 ```
 
 ```{r,eval = TRUE}
@@ -58,21 +58,24 @@ data("sim_outcome")
 This simulated clinical outcome data is a $15 \times 4$ matrix, representing measurements of a continuous outcome for 15 subjects over 4 time points. 
 
 ```{r, echo=F}
-dat = matrix(NA,60,1)
-for(i in 1:15){
-  dat[(i-1)*4+seq(4),] = sim_outcome[i,]
+dat <- matrix(NA, 60, 1)
+for (i in 1:15) {
+  dat[(i - 1) * 4 + seq(4), ] <- sim_outcome[i, ]
 }
-timelabs = 1:4
-time = factor(rep(timelabs, 15), levels = timelabs)
-id = rep(1:15, each = 4)
-colors = '#00BFC4'
-value = reshape2::melt(dat)$value
-meltdf = data.frame(value, time, id, colors)
+timelabs <- 1:4
+time <- factor(rep(timelabs, 15), levels = timelabs)
+id <- rep(1:15, each = 4)
+colors <- "#00BFC4"
+value <- reshape2::melt(dat)$value
+meltdf <- data.frame(value, time, id, colors)
 # head(meltdf)
 
 
-  ggplot2::ggplot(meltdf, ggplot2::aes(x = time, y = value, group = id)) + ggplot2::geom_line(color = colors) + ggplot2::theme(legend.position = "none") +ggplot2::xlab("Time") + ggplot2::ylab("Outcome")
-                         
+ggplot2::ggplot(meltdf, ggplot2::aes(x = time, y = value, group = id)) +
+  ggplot2::geom_line(color = colors) +
+  ggplot2::theme(legend.position = "none") +
+  ggplot2::xlab("Time") +
+  ggplot2::ylab("Outcome")
 ```
 
 ## Example Variables
@@ -97,7 +100,7 @@ plot_trajectories(sim_metabs, selected = 1:20)
 Now that we have loaded our x array and y matrix, we can fit a lasso + laplacian and a group lasso + laplacian model. To fit the (non-group) lasso + laplacian model, we can specify `groups = FALSE`. If we don't specify any of the model hyperparameters they will be automatically found.
 
 ```{r, cache = F}
-promod_ll = prolong(sim_metabs, sim_outcome, groups = FALSE)
+promod_ll <- prolong(sim_metabs, sim_outcome, groups = FALSE)
 ```
 
 Now that we have the results, we can quickly and easily visualize the selected variables with `plot_trajectories()`.
@@ -109,9 +112,7 @@ plot_trajectories(sim_metabs, promod_ll)
 Let's repeat the process but with the group lasso + laplacian model. The default is to automatically create 1 group for each of the $p$ variables, with the different time point observations as replications within that group.
 
 ```{r, cache = F}
-
-promod_gll = prolong(sim_metabs, sim_outcome)
-
+promod_gll <- prolong(sim_metabs, sim_outcome)
 ```
 
 
@@ -126,7 +127,7 @@ plot_trajectories(sim_metabs, promod_gll)
 
 The `delta_heatmap()` function takes the $n\times p \times t$ array of variables and produces a heatmap of the delta-scale absolute correlations to visualize  By default, `delta_heatmap()` will open a window to display an interactive Shiny app with the option to view a selected subsection of the heatmap.
 
-```{r, eval = T}
+```{r, eval = FALSE, message = FALSE, warning=FALSE}
 delta_heatmap(sim_metabs)
 ```
 
@@ -134,8 +135,5 @@ If `interactive = FALSE`, then a static heatmap will instead be produced. We can
 
 
 ```{r}
-delta_heatmap(sim_metabs, timediff = '3-2', interactive = F)
+delta_heatmap(sim_metabs, timediff = "3-2", interactive = F)
 ```
-
-
-
