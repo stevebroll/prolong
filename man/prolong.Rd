@@ -89,6 +89,7 @@ promod$selected
 
 }
 \references{
+\insertRef{prolong}{prolong}
 \insertAllCited{}
 \insertRef{gglasso}{prolong}
 \insertRef{group-lasso}{prolong}

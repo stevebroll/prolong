@@ -1,3 +1,15 @@
+@article {prolong,
+	author = {Steve Broll and Sumanta Basu and Myung Hee Lee and Martin T Wells},
+	title = {PROLONG: Penalized Regression for Outcome guided Longitudinal Omics analysis with Network and Group constraints},
+	elocation-id = {2023.11.06.565845},
+	year = {2023},
+	doi = {10.1101/2023.11.06.565845},
+	publisher = {Cold Spring Harbor Laboratory},
+	abstract = {Motivation: There is a growing interest in longitudinal omics data, but there are gaps in existing methodology in the high-dimensional setting. This paper focuses on selecting metabolites that co-vary with Tuberculosis mycobacterial load. The proposed method is applied to general continuous longitudinal outcomes with continuous longitudinal omics predictors. Simple longitudinal models examining a single omic predictor at a time do not leverage the correlation across predictors, thus losing power. We propose a penalized regression approach on the first differences of the data that extends the lasso + Laplacian method (Li and Li 2008) to a longitudinal group lasso + Laplacian approach. Our method, PROLONG, leverages the first differences of the data to address the piecewise linear structure and the observed time dependence. The Laplacian network constraint incorporates the dependence structure of the predictors, and the group lasso constraint induces sparsity while grouping metabolites across their first differenced observations. Results: With an automated selection of model hyper-parameters, PROLONG correctly selects target metabolites with high specificity and sensitivity across simulation scenarios and sizes. PROLONG selects a set of metabolites from the real data that includes interesting targets identified during EDA. Availability: R package {\textquoteright}prolong{\textquoteright} is in development. Conclusions: PROLONG is a powerful method for selecting interesting features in high dimensional longitudinal omics data that co-vary with some continuous clinical outcome.Competing Interest StatementThe authors have declared no competing interest.},
+	URL = {https://www.biorxiv.org/content/early/2023/11/07/2023.11.06.565845},
+	eprint = {https://www.biorxiv.org/content/early/2023/11/07/2023.11.06.565845.full.pdf},
+	journal = {bioRxiv}
+}
 @article{gglasso,
 	author = {Yang, Yi and Zou, Hui},
 	title = "{A fast unified algorithm for solving group-lasso penalize learning problems}",
