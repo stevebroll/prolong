@@ -101,7 +101,7 @@ prolong <-
       message("No groups supplied or suggested, ordinary lasso will be used instead of group lasso")
     }
     if (!is.null(groups) &
-      groups != sort(groups)) {
+      !identical(groups, sort(groups))) {
       stop(
         "Groups must consist of consecutive columns, with group numbers counting from 1 to # groups"
       )
