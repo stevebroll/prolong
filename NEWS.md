@@ -1,3 +1,10 @@
+# prolong 0.5.0
+
+* Added testing library and fixed discovered bugs
+* Improved documentation and better example data
+* Added reference to PROLONG on biorxiv
+* `prolong` is currently safe to use with key functionality available, further updates will primarily be expanding the options available for each function and adding a Shiny app with most functionality of in R version
+
 # prolong 0.4.0
 
 * Added functions to produce delta-scale pairwise correlation scatterplots, heatmaps, and networks 
