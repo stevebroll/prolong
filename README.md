@@ -30,3 +30,8 @@ You can install the development version of prolong from
 # install.packages("devtools")
 devtools::install_github("stevebroll/prolong")
 ```
+
+## References
+
+The PROLONG method preprint is available at biorxiv
+[here](https://doi.org/10.1101/2023.11.06.565845).
