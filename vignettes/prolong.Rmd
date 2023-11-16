@@ -143,11 +143,11 @@ delta_heatmap(sim_metabs, timediff = "3-2", interactive = F)
 The `delta_heatmap()` function can also take in a prolong object, numeric list of columns, or column names to only show the heatmap for a selected subset of variables. These can be passed to arguments `object = ` and `selected =` like with `plot_trajectories`
 
 ```{r}
-delta_heatmap(sim_metabs, timediff = '2-1', object = promod_gll)
+delta_heatmap(sim_metabs, timediff = '2-1', object = promod_gll, interactive = F)
 ```
 
 ```{r}
-delta_heatmap(sim_metabs, timediff = '3-2', selected = promod_gll$selected)
+delta_heatmap(sim_metabs, timediff = '3-2', selected = promod_gll$selected, interactive = F)
 ```
 
 
