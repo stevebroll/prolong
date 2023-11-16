@@ -4,12 +4,23 @@
 \alias{delta_heatmap}
 \title{Interactive Heatmaps for Delta-Scale Pairwise Correlations}
 \usage{
-delta_heatmap(x, timediff = "2-1", interactive = TRUE, grayscale = FALSE)
+delta_heatmap(
+  x,
+  timediff = "2-1",
+  object = NULL,
+  selected = NULL,
+  interactive = TRUE,
+  grayscale = FALSE
+)
 }
 \arguments{
 \item{x}{Input covariate array, with n rows, p columns, and t slices}
 
 \item{timediff}{Pair of time points to use in heatmap. Should be in format \code{'t2-t1'}}
+
+\item{object}{A \code{prolong} model object. Can be left \code{NULL} if \code{selected} is provided or if all variables are to be used}
+
+\item{selected}{A character list of variable names or a numeric index of variables of interest to be included in the heatmap Can be left \code{NULL} if object is provided or if all variables are to be used}
 
 \item{interactive}{If \code{TRUE}, a shiny app will open in browser that will display an interactive version of the heatmap where sub-heatmaps can be selected for display}
 

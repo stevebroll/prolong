@@ -9,6 +9,8 @@
 #'
 #' @inheritParams prolong
 #' @param timediff Pair of time points to use in heatmap. Should be in format `'t2-t1'`
+#' @param object A `prolong` model object. Can be left `NULL` if `selected` is provided or if all variables are to be used
+#' @param selected A character list of variable names or a numeric index of variables of interest to be included in the heatmap Can be left `NULL` if object is provided or if all variables are to be used
 #' @param interactive If `TRUE`, a shiny app will open in browser that will display an interactive version of the heatmap where sub-heatmaps can be selected for display
 #' @param grayscale If `TRUE` the viridis colors will be desaturated to grayscale
 #'
@@ -27,11 +29,31 @@
 #' \insertRef{CH3}{prolong}
 delta_heatmap <- function(x,
                           timediff = "2-1",
+                          object = NULL,
+                          selected = NULL,
                           interactive = TRUE,
                           grayscale = FALSE) {
   t1 <- as.numeric(unlist(strsplit(timediff, "-"))[1])
   t2 <- as.numeric(unlist(strsplit(timediff, "-"))[2])
   x1 <- x[, , t2] - x[, , t1]
+
+  if (!is.null(object) & !("prolong" %in% class(object))) {
+    stop("Model object must be of class `prolong`")
+  }
+  if (!is.null(object)) {
+    varnames <- object$selected
+    varlist <- which(colnames(x) %in% varnames)
+    x1 <- x1[, varlist]
+  } else if (!is.null(selected)) {
+    if (is.character(selected)) {
+      varnames <- selected
+      varlist <- which(colnames(x) %in% varnames)
+      x1 <- x1[, varlist]
+    } else if (is.numeric(selected)) {
+      x1 <- x1[, varlist]
+    }
+  }
+
   rr1 <- abs(stats::cor(x1))
   cols <- grDevices::hcl.colors(100, palette = "viridis")
   if (grayscale) {
