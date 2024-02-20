@@ -130,22 +130,15 @@ prolong <-
       ZTY <- crossprod(DXout$DX, DY)
       YTZ <- crossprod(DY, DXout$DX)
       dn <- nrow(DXout$DX)
-
+      solvechol <- function(x) {
+        Matrix::chol2inv(Matrix::chol(x))
+      }
       minfun <- function(l) {
-        dn * log(crossprod(DY, DY) - YTZ %*% solve(l[1] *
-          (lap + diag(l[2], nrow(
-            lap
-          )))
-          + ZTZ) %*% ZTY) + log(abs(det(l[1] *
-          (
-            lap + diag(l[2], nrow(lap))
-          )
-          + ZTZ))) -
-          log(abs(det(l[1] *
-
-            (
-              lap + diag(l[2], nrow(lap))
-            ))))
+        l - abs(l)
+        B <- l[1] * as.matrix(lap) + diag(l[2], nrow(lap))
+        dn * log(crossprod(DY, DY) - YTZ %*% solvechol(B + ZTZ) %*% ZTY) +
+          log(abs(det(B + ZTZ))) -
+          log(abs(det(B)))
       }
       opt <- stats::optim(optimvals, minfun)
       lambda2 <- opt$par[1]
@@ -176,7 +169,8 @@ prolong <-
         cv <- cv.glmnet_prolong(
           Xaug,
           Yaug,
-          foldid = foldids)
+          foldid = foldids
+        )
         lambda1 <- cv$lambda.1se
       } else {
         lambda1 <- lambda1
