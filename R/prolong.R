@@ -79,7 +79,8 @@
 #' \insertRef{glmnet}{prolong}
 #' \insertRef{lasso}{prolong}
 #'
-prolong <- function(x, y, lambda1 = NULL, lambda2 = NULL, lambdar = NULL, groups = TRUE, foldids = NULL, optimvals = c(1, 0.01)) {
+prolong <- function(x, y, lambda1 = NULL, lambda2 = NULL, lambdar = NULL, groups = TRUE,
+    foldids = NULL, optimvals = c(1, 0.01)) {
     if (nrow(y) != nrow(x)) {
         stop("Incompatible dimensions for X and Y, X and Y should have same #
            rows, 1 for each sample")
@@ -101,7 +102,8 @@ prolong <- function(x, y, lambda1 = NULL, lambda2 = NULL, lambdar = NULL, groups
     DXout <- get_delta_x(x, n, p, t)
     DY <- get_delta_y(y, n, t)
     cormat <- get_cor_matrix(DXout$DXarray, n, p, t)
-    graph <- igraph::graph_from_adjacency_matrix(cormat, mode = "undirected", weighted = T, diag = F)
+    graph <- igraph::graph_from_adjacency_matrix(cormat, mode = "undirected", weighted = T,
+        diag = F)
     lap <- as.matrix(igraph::laplacian_matrix(graph, normalized = T))
 
     # Optimization for l2
@@ -117,7 +119,8 @@ prolong <- function(x, y, lambda1 = NULL, lambda2 = NULL, lambdar = NULL, groups
         minfun <- function(l) {
             l - abs(l)
             B <- l[1] * as.matrix(lap) + diag(l[2], nrow(lap))
-            dn * log(crossprod(DY, DY) - YTZ %*% solvechol(B + ZTZ) %*% ZTY) + log(abs(det(B + ZTZ))) - log(abs(det(B)))
+            dn * log(crossprod(DY, DY) - YTZ %*% solvechol(B + ZTZ) %*% ZTY) + log(abs(det(B +
+                ZTZ))) - log(abs(det(B)))
         }
         opt <- stats::optim(optimvals, minfun)
         lambda2 <- opt$par[1]
@@ -175,7 +178,8 @@ prolong <- function(x, y, lambda1 = NULL, lambda2 = NULL, lambdar = NULL, groups
     names(coefs) <- colnames(Xaug)
     df <- length(which(coefs != 0))
     selected <- unique(names(coefs)[which(coefs != 0)])
-    output <- list(beta = as.matrix(coefs), selected = selected, df = df, dim = c(p, length(lambda1)), lambda1 = lambda1, lambda2 = lambda2, lambdar = lambdar,
+    output <- list(beta = as.matrix(coefs), selected = selected, df = df, dim = c(p,
+        length(lambda1)), lambda1 = lambda1, lambda2 = lambda2, lambdar = lambdar,
         npasses = npasses, jerr = jerr, group = groups, call = call)
     class(output) <- c("prolong", class(output))
 

@@ -27,7 +27,8 @@
 #' @references
 #' \insertRef{CH2}{prolong}
 #' \insertRef{CH3}{prolong}
-delta_heatmap <- function(x, timediff = "2-1", object = NULL, selected = NULL, interactive = TRUE, grayscale = FALSE) {
+delta_heatmap <- function(x, timediff = "2-1", object = NULL, selected = NULL, interactive = TRUE,
+    grayscale = FALSE) {
     t1 <- as.numeric(unlist(strsplit(timediff, "-"))[1])
     t2 <- as.numeric(unlist(strsplit(timediff, "-"))[2])
     x1 <- x[, , t2] - x[, , t1]
@@ -58,7 +59,8 @@ delta_heatmap <- function(x, timediff = "2-1", object = NULL, selected = NULL, i
         stats::as.dist(1 - v)
     }, col = cols, trace = "none", symm = T, keysize = 0.5, offsetRow = 0, offsetCol = 0)
     if (interactive) {
-        InteractiveComplexHeatmap::htShiny(ht, title = paste(timediff, "Heatmap"), description = "")
+        InteractiveComplexHeatmap::htShiny(ht, title = paste(timediff, "Heatmap"),
+            description = "")
     } else {
         ht
     }
@@ -81,7 +83,8 @@ delta_heatmap <- function(x, timediff = "2-1", object = NULL, selected = NULL, i
 #' plot_trajectories(Xarray, promod)
 #' plot_trajectories(Xarray, selected = promod$selected)
 #' }
-plot_trajectories <- function(x, object = NULL, selected = NULL, timelabs = NULL, colors = "#00BFC4") {
+plot_trajectories <- function(x, object = NULL, selected = NULL, timelabs = NULL,
+    colors = "#00BFC4") {
     if (is.null(object) & is.null(selected)) {
         stop("Either a `prolong` model object or list of variable names must be supplied")
     }
@@ -128,7 +131,8 @@ plot_trajectories <- function(x, object = NULL, selected = NULL, timelabs = NULL
     meltdf <- cbind(reshape2::melt(plotdat)[, 3:2], time, id)
     colnames(meltdf)[2] <- "varname"
     value <- meltdf$value  # to avoid check notes
-    p <- ggplot2::ggplot(meltdf, ggplot2::aes(x = time, y = value, group = id)) + ggplot2::geom_line(color = colors)
+    p <- ggplot2::ggplot(meltdf, ggplot2::aes(x = time, y = value, group = id)) +
+        ggplot2::geom_line(color = colors)
     p + ggplot2::facet_wrap("varname", scales = "free")
 }
 
@@ -159,7 +163,8 @@ plot_trajectories <- function(x, object = NULL, selected = NULL, timelabs = NULL
 #' @references
 #' \insertRef{ggplot2}{prolong}
 #' \insertRef{plotly}{prolong}
-delta_scatter <- function(x, timediff1 = "2-1", timediff2 = "3-2", timediff3 = NULL, fisherz = TRUE, interactive = TRUE, digits = 3) {
+delta_scatter <- function(x, timediff1 = "2-1", timediff2 = "3-2", timediff3 = NULL,
+    fisherz = TRUE, interactive = TRUE, digits = 3) {
     p <- ncol(x)
 
     t1 <- as.numeric(unlist(strsplit(timediff1, "-"))[1])
@@ -181,18 +186,23 @@ delta_scatter <- function(x, timediff1 = "2-1", timediff2 = "3-2", timediff3 = N
     vec1 <- corr1[upper.tri(corr1)]
     vec2 <- corr2[upper.tri(corr2)]
 
-    labs <- expand.grid(colnames(x), colnames(x))[as.vector(upper.tri(matrix(0, p, p))), ]
+    labs <- expand.grid(colnames(x), colnames(x))[as.vector(upper.tri(matrix(0, p,
+        p))), ]
     if (is.null(timediff3)) {
         # get long mat
         rmat <- data.frame(round(vec1, digits), round(vec2, digits), labs)
         if (fisherz) {
-            colnames(rmat) <- c(paste(timediff1, "Fisher Z-Transformed Correlations"), paste(timediff2, "Fisher Z-Transformed Correlations"), "Variable 1", "Variable 2")
+            colnames(rmat) <- c(paste(timediff1, "Fisher Z-Transformed Correlations"),
+                paste(timediff2, "Fisher Z-Transformed Correlations"), "Variable 1",
+                "Variable 2")
         } else {
-            colnames(rmat) <- c(paste(timediff1, "Correlations"), paste(timediff2, "Correlations"), "Variable 1", "Variable 2")
+            colnames(rmat) <- c(paste(timediff1, "Correlations"), paste(timediff2,
+                "Correlations"), "Variable 1", "Variable 2")
         }
         name1 <- colnames(rmat)[1]
         name2 <- colnames(rmat)[2]
-        p <- ggplot2::ggplot(data = rmat, ggplot2::aes(x = get(name1), y = get(name2), text = c(paste("Variable 1:", rmat[, 3], "\nVariable 2:", rmat[, 4])))) +
+        p <- ggplot2::ggplot(data = rmat, ggplot2::aes(x = get(name1), y = get(name2),
+            text = c(paste("Variable 1:", rmat[, 3], "\nVariable 2:", rmat[, 4])))) +
             ggplot2::geom_point(size = 0.5) + ggplot2::xlab(name1) + ggplot2::ylab(name2)
         if (interactive) {
             # p <- p %>% plotly::toWebGL()
@@ -216,20 +226,26 @@ delta_scatter <- function(x, timediff1 = "2-1", timediff2 = "3-2", timediff3 = N
         vec3 <- corr3[upper.tri(corr3)]
 
         # get long mat
-        rmat <- data.frame(round(vec1, digits), round(vec2, digits), round(vec3, digits), labs)
+        rmat <- data.frame(round(vec1, digits), round(vec2, digits), round(vec3,
+            digits), labs)
         if (fisherz) {
-            colnames(rmat) <- c(paste(timediff1, "Fisher Z-Transformed Correlations"), paste(timediff2, "Fisher Z-Transformed Correlations"), paste(timediff3,
-                "Fisher Z-Transformed Correlations"), "Variable 1", "Variable 2")
+            colnames(rmat) <- c(paste(timediff1, "Fisher Z-Transformed Correlations"),
+                paste(timediff2, "Fisher Z-Transformed Correlations"), paste(timediff3,
+                  "Fisher Z-Transformed Correlations"), "Variable 1", "Variable 2")
         } else {
-            c(paste(timediff1, "Correlations"), paste(timediff2, "Correlations"), paste(timediff3, "Correlations"), "Variable 1", "Variable 2")
+            c(paste(timediff1, "Correlations"), paste(timediff2, "Correlations"),
+                paste(timediff3, "Correlations"), "Variable 1", "Variable 2")
         }
         name <- colnames(rmat)[1:3]
-        p <- ggplot2::ggplot(data = rmat, ggplot2::aes(x = rlang::.data[[name[1]]], y = rlang::.data[[name[2]]], text = c(paste("Variable 1:", rmat[, 3], "\nVariable 2:",
-            rmat[, 4])))) + ggplot2::geom_point(size = 0.5)
+        p <- ggplot2::ggplot(data = rmat, ggplot2::aes(x = rlang::.data[[name[1]]],
+            y = rlang::.data[[name[2]]], text = c(paste("Variable 1:", rmat[, 3],
+                "\nVariable 2:", rmat[, 4])))) + ggplot2::geom_point(size = 0.5)
         if (interactive) {
-            p <- plotly::plot_ly(rmat, x = ~get(name[1]), y = ~get(name[2]), z = ~get(name[3]), hovertemplate = paste(timediff1, " Corr: %{x}<br>", timediff2,
-                " Corr: %{y}<br>", timediff3, " Corr: %{z}<br>", "%{text}", "<extra></extra>", sep = ""), text = c(paste("Variable 1:", rmat[, 4], "\nVariable 2:",
-                rmat[, 5])))
+            p <- plotly::plot_ly(rmat, x = ~get(name[1]), y = ~get(name[2]), z = ~get(name[3]),
+                hovertemplate = paste(timediff1, " Corr: %{x}<br>", timediff2, " Corr: %{y}<br>",
+                  timediff3, " Corr: %{z}<br>", "%{text}", "<extra></extra>", sep = ""),
+                text = c(paste("Variable 1:", rmat[, 4], "\nVariable 2:", rmat[,
+                  5])))
             p <- p %>%
                 plotly::add_markers(size = 1)
             p <- p %>%
@@ -266,7 +282,8 @@ delta_scatter <- function(x, timediff1 = "2-1", timediff2 = "3-2", timediff3 = N
 #' delta_network(Xarray)
 #' delta_network(Xarray, timediff = '4-2', corr_thresh = .9, method = 'spearman')
 #' }
-delta_network <- function(x, timediff = "2-1", partial = TRUE, corr_thresh = 0.75, interactive = TRUE, method = c("pearson", "kendall", "spearman")) {
+delta_network <- function(x, timediff = "2-1", partial = TRUE, corr_thresh = 0.75,
+    interactive = TRUE, method = c("pearson", "kendall", "spearman")) {
     t1 <- as.numeric(unlist(strsplit(timediff, "-"))[1])
     t2 <- as.numeric(unlist(strsplit(timediff, "-"))[2])
     x1 <- x[, , t2] - x[, , t1]

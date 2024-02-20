@@ -21,16 +21,23 @@ message_wrap <- function(...) {
 
 
 # From ComplexHeatmap
-complexheatmap.2 <- function(x, Rowv = TRUE, Colv = TRUE, distfun = stats::dist, hclustfun = stats::hclust, dendrogram = c("both", "row", "column", "none"), reorderfun = function(d,
-    w) {
-    stats::reorder(d, w)
-}, symm = FALSE, scale = c("none", "row", "column"), na.rm = TRUE, revC = identical(Colv, "Rowv"), add.expr, breaks, symbreaks = any(x < 0, na.rm = TRUE) || scale !=
-    "none", col = "heat.colors", colsep, rowsep, sepcolor = "white", sepwidth = c(0.05, 0.05), cellnote, notecex = 0.6, notecol = "cyan", na.color = graphics::par("bg"),
-    trace = c("column", "row", "both", "none"), tracecol = "cyan", hline = stats::median(breaks), vline = stats::median(breaks), linecol = tracecol, margins = c(5,
-        5), ColSideColors, RowSideColors, cexRow = 0.6, cexCol = 0.6, labRow = NULL, labCol = NULL, srtRow = NULL, srtCol = NULL, adjRow = c(0, NA), adjCol = c(NA,
-        0), offsetRow = 0.5, offsetCol = 0.5, colRow = NULL, colCol = NULL, key = TRUE, keysize = 1.5, density.info = c("histogram", "density", "none"), denscol = tracecol,
-    symkey = any(x < 0, na.rm = TRUE) || symbreaks, densadj = 0.25, key.title = NULL, key.xlab = NULL, key.ylab = NULL, key.xtickfun = NULL, key.ytickfun = NULL,
-    key.par = list(), main = NULL, xlab = NULL, ylab = NULL, lmat = NULL, lhei = NULL, lwid = NULL, extrafun = NULL, ..., run_draw = FALSE) {
+complexheatmap.2 <- function(x, Rowv = TRUE, Colv = TRUE, distfun = stats::dist,
+    hclustfun = stats::hclust, dendrogram = c("both", "row", "column", "none"), reorderfun = function(d,
+        w) {
+        stats::reorder(d, w)
+    }, symm = FALSE, scale = c("none", "row", "column"), na.rm = TRUE, revC = identical(Colv,
+        "Rowv"), add.expr, breaks, symbreaks = any(x < 0, na.rm = TRUE) || scale !=
+        "none", col = "heat.colors", colsep, rowsep, sepcolor = "white", sepwidth = c(0.05,
+        0.05), cellnote, notecex = 0.6, notecol = "cyan", na.color = graphics::par("bg"),
+    trace = c("column", "row", "both", "none"), tracecol = "cyan", hline = stats::median(breaks),
+    vline = stats::median(breaks), linecol = tracecol, margins = c(5, 5), ColSideColors,
+    RowSideColors, cexRow = 0.6, cexCol = 0.6, labRow = NULL, labCol = NULL, srtRow = NULL,
+    srtCol = NULL, adjRow = c(0, NA), adjCol = c(NA, 0), offsetRow = 0.5, offsetCol = 0.5,
+    colRow = NULL, colCol = NULL, key = TRUE, keysize = 1.5, density.info = c("histogram",
+        "density", "none"), denscol = tracecol, symkey = any(x < 0, na.rm = TRUE) ||
+        symbreaks, densadj = 0.25, key.title = NULL, key.xlab = NULL, key.ylab = NULL,
+    key.xtickfun = NULL, key.ytickfun = NULL, key.par = list(), main = NULL, xlab = NULL,
+    ylab = NULL, lmat = NULL, lhei = NULL, lwid = NULL, extrafun = NULL, ..., run_draw = FALSE) {
     if (is.data.frame(x)) {
         warning_wrap("The input is a data frame, convert it to the matrix.")
         mat <- as.matrix(x)
@@ -109,7 +116,8 @@ complexheatmap.2 <- function(x, Rowv = TRUE, Colv = TRUE, distfun = stats::dist,
         message_wrap("Note, in 'heatmap.2()', when rows are scaled, the row dendrogram is still calculated from the original matrix (not from the scaled matrix).")
     } else if ("column" %in% scale) {
         if (any(is.na(mat))) {
-            mat <- t((t(mat) - colMeans(mat, na.rm = TRUE))/matrixStats::colSds(mat, na.rm = TRUE))
+            mat <- t((t(mat) - colMeans(mat, na.rm = TRUE))/matrixStats::colSds(mat,
+                na.rm = TRUE))
         } else {
             mat <- scale(mat)
         }
@@ -142,9 +150,11 @@ complexheatmap.2 <- function(x, Rowv = TRUE, Colv = TRUE, distfun = stats::dist,
     n_col <- ncol
     if (exists("extreme")) {
         lim <- max(abs(mat), na.rm = TRUE)
-        ht_param$col <- circlize::colorRamp2(seq(-lim, lim, length.out = n_col), col)
+        ht_param$col <- circlize::colorRamp2(seq(-lim, lim, length.out = n_col),
+            col)
     } else {
-        ht_param$col <- circlize::colorRamp2(seq(min(mat, na.rm = TRUE), max(mat, na.rm = TRUE), length.out = n_col), col)
+        ht_param$col <- circlize::colorRamp2(seq(min(mat, na.rm = TRUE), max(mat,
+            na.rm = TRUE), length.out = n_col), col)
     }
     if (!missing(colsep)) {
         warning_wrap("argument `colsep` is not supported in heatmap.2 -> Heatmap translation, skip it. Suggest to use `column_split` argument in Heatmap() which can be directly used here.")
@@ -154,12 +164,14 @@ complexheatmap.2 <- function(x, Rowv = TRUE, Colv = TRUE, distfun = stats::dist,
     }
     if (!missing(cellnote)) {
         ht_param$layer_fun <- function(j, i, x, y, w, h, fill) {
-            grid::grid.text(ComplexHeatmap::pindex(cellnote, i, j), x, y, gp = grid::gpar(cex = notecex, col = notecol))
+            grid::grid.text(ComplexHeatmap::pindex(cellnote, i, j), x, y, gp = grid::gpar(cex = notecex,
+                col = notecol))
         }
     }
     ht_param$na_col <- na.color
     if (!missing(ColSideColors)) {
-        ht_param$top_annotation <- ComplexHeatmap::HeatmapAnnotation(column = ColSideColors, col = list(column = structure(unique(ColSideColors), names = unique(ColSideColors))),
+        ht_param$top_annotation <- ComplexHeatmap::HeatmapAnnotation(column = ColSideColors,
+            col = list(column = structure(unique(ColSideColors), names = unique(ColSideColors))),
             show_legend = FALSE, show_annotation_name = FALSE)
     }
     if (!missing(RowSideColors)) {
@@ -168,19 +180,22 @@ complexheatmap.2 <- function(x, Rowv = TRUE, Colv = TRUE, distfun = stats::dist,
             x <- paste(strwrap(x), collapse = "\n")
             stop(x, call. = FALSE)
         }
-        ComplexHeatmap::rowAnnotation(row = RowSideColors, col = list(row = structure(unique(RowSideColors), names = unique(RowSideColors))), show_legend = FALSE,
-            show_annotation_name = FALSE)
+        ComplexHeatmap::rowAnnotation(row = RowSideColors, col = list(row = structure(unique(RowSideColors),
+            names = unique(RowSideColors))), show_legend = FALSE, show_annotation_name = FALSE)
     }
     if (identical(ht_param$cluster_rows, FALSE) || dendrogram %in% c("none", "column")) {
         if (is.null(ht_param$left_annotation)) {
-            ht_param$left_annotation <- ComplexHeatmap::rowAnnotation(foo1 = ComplexHeatmap::anno_empty(width = grid::unit(4, "cm"), border = FALSE))
+            ht_param$left_annotation <- ComplexHeatmap::rowAnnotation(foo1 = ComplexHeatmap::anno_empty(width = grid::unit(4,
+                "cm"), border = FALSE))
         } else {
-            ht_param$left_annotation <- c(ht_param$left_annotation, ComplexHeatmap::rowAnnotation(foo1 = ComplexHeatmap::anno_empty(width = grid::unit(3.5, "cm"))))
+            ht_param$left_annotation <- c(ht_param$left_annotation, ComplexHeatmap::rowAnnotation(foo1 = ComplexHeatmap::anno_empty(width = grid::unit(3.5,
+                "cm"))))
         }
     }
     if (identical(ht_param$cluster_columns, FALSE) || dendrogram %in% c("none", "row")) {
         if (is.null(ht_param$top_annotation)) {
-            ht_param$top_annotation <- ComplexHeatmap::HeatmapAnnotation(foo2 = ComplexHeatmap::anno_empty(height = grid::unit(3, "cm"), border = FALSE))
+            ht_param$top_annotation <- ComplexHeatmap::HeatmapAnnotation(foo2 = ComplexHeatmap::anno_empty(height = grid::unit(3,
+                "cm"), border = FALSE))
         } else {
             ht_param$top_annotation <- c(ht_param$top_annotation, ComplexHeatmap::HeatmapAnnotation(foo2 = ComplexHeatmap::anno_empty(height = grid::unit(3.5,
                 "cm"))))
@@ -223,19 +238,23 @@ complexheatmap.2 <- function(x, Rowv = TRUE, Colv = TRUE, distfun = stats::dist,
     }
     if (!is.null(xlab)) {
         if (is.null(ht_param$column_labels)) {
-            ht_param$bottom_annotation <- ComplexHeatmap::HeatmapAnnotation(xlab = ComplexHeatmap::anno_block(labels = xlab, gp = grid::gpar(col = NA)))
+            ht_param$bottom_annotation <- ComplexHeatmap::HeatmapAnnotation(xlab = ComplexHeatmap::anno_block(labels = xlab,
+                gp = grid::gpar(col = NA)))
         } else {
-            ht_param$bottom_annotation <- ComplexHeatmap::HeatmapAnnotation(colnames = ComplexHeatmap::anno_text(ht_param$column_labels, gp = ht_param$column_names_gp,
-                rot = ht_param$column_names_rot), xlab = ComplexHeatmap::anno_block(labels = xlab, gp = grid::gpar(col = NA)))
+            ht_param$bottom_annotation <- ComplexHeatmap::HeatmapAnnotation(colnames = ComplexHeatmap::anno_text(ht_param$column_labels,
+                gp = ht_param$column_names_gp, rot = ht_param$column_names_rot),
+                xlab = ComplexHeatmap::anno_block(labels = xlab, gp = grid::gpar(col = NA)))
             ht_param$show_column_names <- FALSE
         }
     }
     if (!is.null(ylab)) {
         if (is.null(ht_param$row_labels)) {
-            ht_param$right_annotation <- ComplexHeatmap::rowAnnotation(ylab = ComplexHeatmap::anno_block(labels = ylab, gp = grid::gpar(col = NA)))
+            ht_param$right_annotation <- ComplexHeatmap::rowAnnotation(ylab = ComplexHeatmap::anno_block(labels = ylab,
+                gp = grid::gpar(col = NA)))
         } else {
-            ht_param$right_annotation <- ComplexHeatmap::rowAnnotation(rownames = ComplexHeatmap::anno_text(ht_param$row_labels, gp = ht_param$row_names_gp, rot = ht_param$row_names_rot),
-                ylab = ComplexHeatmap::anno_block(labels = ylab, gp = grid::gpar(col = NA)))
+            ht_param$right_annotation <- ComplexHeatmap::rowAnnotation(rownames = ComplexHeatmap::anno_text(ht_param$row_labels,
+                gp = ht_param$row_names_gp, rot = ht_param$row_names_rot), ylab = ComplexHeatmap::anno_block(labels = ylab,
+                gp = grid::gpar(col = NA)))
             ht_param$show_row_names <- FALSE
         }
     }
@@ -253,7 +272,8 @@ complexheatmap.2 <- function(x, Rowv = TRUE, Colv = TRUE, distfun = stats::dist,
         layer_fun <- function(j, i, x, y, w, h, fill) {
             ind_mat <- ComplexHeatmap::restore_matrix(j, i, x, y)
             ind <- ind_mat[1, ]
-            grid::grid.segments(x[ind], grid::unit(0, "npc"), x[ind], grid::unit(1, "npc"), gp = grid::gpar(col = linecol, lty = 2))
+            grid::grid.segments(x[ind], grid::unit(0, "npc"), x[ind], grid::unit(1,
+                "npc"), gp = grid::gpar(col = linecol, lty = 2))
             for (ki in seq_len(ncol(ind_mat))) {
                 ind <- ind_mat[, ki]
                 offset <- (mat[i[ind], j[ind[1]]] - min)/(max - min) * w[ind]
@@ -267,7 +287,8 @@ complexheatmap.2 <- function(x, Rowv = TRUE, Colv = TRUE, distfun = stats::dist,
         layer_fun <- function(j, i, x, y, w, h, fill) {
             ind_mat <- ComplexHeatmap::restore_matrix(j, i, x, y)
             ind <- ind_mat[, 1]
-            grid::grid.segments(grid::unit(0, "npc"), y[ind], grid::unit(1, "npc"), y[ind], gp = grid::gpar(col = linecol, lty = 2))
+            grid::grid.segments(grid::unit(0, "npc"), y[ind], grid::unit(1, "npc"),
+                y[ind], gp = grid::gpar(col = linecol, lty = 2))
             for (ki in seq_len(nrow(ind_mat))) {
                 ind <- ind_mat[ki, ]
                 offset <- (mat[i[ind[1]], j[ind]] - min)/(max - min) * h[ind]
@@ -308,62 +329,73 @@ complexheatmap.2 <- function(x, Rowv = TRUE, Colv = TRUE, distfun = stats::dist,
         post_fun <- NULL
     } else {
         post_fun <- function(ht) {
-            ComplexHeatmap::decorate_heatmap_body(paste0("heatmap.2_", random_str), {
-                grid::pushViewport(grid::viewport(grid::unit(0, "npc"), grid::unit(1, "npc"), width = grid::unit(4, "cm"), height = grid::unit(3, "cm"), just = c("right",
-                  "bottom")))
-                left_width <- grid::unit(1, "cm")
-                bottom_height <- grid::unit(1, "cm")
-                top_height <- grid::unit(0.5, "cm")
-                if (density.info == "histogram") {
-                  tb <- graphics::hist(mat, breaks = breaks, plot = FALSE)
-                  x_at <- pretty(range(tb$breaks), n = 3)
-                  y_at <- pretty(range(tb$counts), n = 3)
-                  x_range <- range(tb$breaks)
-                  y_range <- range(tb$counts)
-                  y_range[2] <- y_range[2] + (y_range[2] - y_range[1]) * 0.05
-                } else if (density.info == "density") {
-                  den <- stats::density(mat, na.rm = TRUE, from = min(breaks), to = max(breaks), adjust = densadj)
-                  den_x <- den$x
-                  den_y <- den$y
-                  x_range <- range(breaks)
-                  l <- den_x >= x_range[1] & den_x <= x_range[2]
-                  den_x <- den_x[l]
-                  den_y <- den_y[l]
-                  x_at <- pretty(range(den_x), n = 3)
-                  y_at <- pretty(range(den_y), n = 3)
-                  y_range <- range(den_y)
-                  y_range[2] <- y_range[2] + (y_range[2] - y_range[1]) * 0.05
-                }
-                x_at <- x_at[x_at >= x_range[1] & x_at <= x_range[2]]
-                y_at <- y_at[y_at >= y_range[1] & y_at <= y_range[2]]
-                grid::pushViewport(grid::viewport(x = left_width, y = bottom_height, width = grid::unit(1, "npc") - left_width - grid::unit(2, "mm"), height = grid::unit(1,
-                  "npc") - bottom_height - top_height, just = c("left", "bottom"), xscale = x_range, yscale = y_range))
-                x <- seq(min(breaks), max(breaks), length.out = 101)
-                grid::grid.rect(x = x[1:100], width = (x_range[2] - x_range[1])/100, default.units = "native", just = "left", gp = grid::gpar(fill = ht_param$col(x +
-                  (x_range[2] - x_range[1])/100 * 0.5), col = NA))
-                if (density.info == "histogram") {
-                  x <- rep(tb$breaks, each = 2)
-                  x <- x[-c(1, length(x))]
-                  y <- rep(tb$counts, each = 2)
-                } else if (density.info == "density") {
-                  x <- den_x
-                  y <- den_y
-                }
-                grid::grid.lines(x, y, default.units = "native", gp = grid::gpar(col = denscol))
-                if (trace == "column") {
-                  grid::grid.lines(c(vline, vline), grid::unit(c(0, 1), "npc"), default.units = "native", gp = grid::gpar(col = linecol, lty = 2))
-                } else if (trace == "row") {
-                  grid::grid.lines(grid::unit(c(0, 1), "npc"), c(hline, hline), default.units = "native", gp = grid::gpar(col = linecol, lty = 2))
-                }
-                grid::grid.rect(gp = grid::gpar(fill = "transparent"))
-                grid::grid.xaxis(at = x_at, gp = grid::gpar(fontsize = 8))
-                grid::grid.text(key.xlab, y = grid::unit(0, "npc") - grid::unit(8, "mm"), gp = grid::gpar(fontsize = 8))
-                grid::grid.yaxis(at = y_at, gp = grid::gpar(fontsize = 8))
-                grid::grid.text(key.ylab, x = grid::unit(0, "npc") - grid::unit(8, "mm"), gp = grid::gpar(fontsize = 8), rot = 90)
-                grid::grid.text("Color Key", y = grid::unit(1, "npc") + top_height * 0.5, gp = grid::gpar(fontface = "bold", fontsize = 10))
-                grid::popViewport()
-                grid::popViewport()
-            })
+            ComplexHeatmap::decorate_heatmap_body(paste0("heatmap.2_", random_str),
+                {
+                  grid::pushViewport(grid::viewport(grid::unit(0, "npc"), grid::unit(1,
+                    "npc"), width = grid::unit(4, "cm"), height = grid::unit(3, "cm"),
+                    just = c("right", "bottom")))
+                  left_width <- grid::unit(1, "cm")
+                  bottom_height <- grid::unit(1, "cm")
+                  top_height <- grid::unit(0.5, "cm")
+                  if (density.info == "histogram") {
+                    tb <- graphics::hist(mat, breaks = breaks, plot = FALSE)
+                    x_at <- pretty(range(tb$breaks), n = 3)
+                    y_at <- pretty(range(tb$counts), n = 3)
+                    x_range <- range(tb$breaks)
+                    y_range <- range(tb$counts)
+                    y_range[2] <- y_range[2] + (y_range[2] - y_range[1]) * 0.05
+                  } else if (density.info == "density") {
+                    den <- stats::density(mat, na.rm = TRUE, from = min(breaks),
+                      to = max(breaks), adjust = densadj)
+                    den_x <- den$x
+                    den_y <- den$y
+                    x_range <- range(breaks)
+                    l <- den_x >= x_range[1] & den_x <= x_range[2]
+                    den_x <- den_x[l]
+                    den_y <- den_y[l]
+                    x_at <- pretty(range(den_x), n = 3)
+                    y_at <- pretty(range(den_y), n = 3)
+                    y_range <- range(den_y)
+                    y_range[2] <- y_range[2] + (y_range[2] - y_range[1]) * 0.05
+                  }
+                  x_at <- x_at[x_at >= x_range[1] & x_at <= x_range[2]]
+                  y_at <- y_at[y_at >= y_range[1] & y_at <= y_range[2]]
+                  grid::pushViewport(grid::viewport(x = left_width, y = bottom_height,
+                    width = grid::unit(1, "npc") - left_width - grid::unit(2, "mm"),
+                    height = grid::unit(1, "npc") - bottom_height - top_height, just = c("left",
+                      "bottom"), xscale = x_range, yscale = y_range))
+                  x <- seq(min(breaks), max(breaks), length.out = 101)
+                  grid::grid.rect(x = x[1:100], width = (x_range[2] - x_range[1])/100,
+                    default.units = "native", just = "left", gp = grid::gpar(fill = ht_param$col(x +
+                      (x_range[2] - x_range[1])/100 * 0.5), col = NA))
+                  if (density.info == "histogram") {
+                    x <- rep(tb$breaks, each = 2)
+                    x <- x[-c(1, length(x))]
+                    y <- rep(tb$counts, each = 2)
+                  } else if (density.info == "density") {
+                    x <- den_x
+                    y <- den_y
+                  }
+                  grid::grid.lines(x, y, default.units = "native", gp = grid::gpar(col = denscol))
+                  if (trace == "column") {
+                    grid::grid.lines(c(vline, vline), grid::unit(c(0, 1), "npc"),
+                      default.units = "native", gp = grid::gpar(col = linecol, lty = 2))
+                  } else if (trace == "row") {
+                    grid::grid.lines(grid::unit(c(0, 1), "npc"), c(hline, hline),
+                      default.units = "native", gp = grid::gpar(col = linecol, lty = 2))
+                  }
+                  grid::grid.rect(gp = grid::gpar(fill = "transparent"))
+                  grid::grid.xaxis(at = x_at, gp = grid::gpar(fontsize = 8))
+                  grid::grid.text(key.xlab, y = grid::unit(0, "npc") - grid::unit(8,
+                    "mm"), gp = grid::gpar(fontsize = 8))
+                  grid::grid.yaxis(at = y_at, gp = grid::gpar(fontsize = 8))
+                  grid::grid.text(key.ylab, x = grid::unit(0, "npc") - grid::unit(8,
+                    "mm"), gp = grid::gpar(fontsize = 8), rot = 90)
+                  grid::grid.text("Color Key", y = grid::unit(1, "npc") + top_height *
+                    0.5, gp = grid::gpar(fontface = "bold", fontsize = 10))
+                  grid::popViewport()
+                  grid::popViewport()
+                })
         }
     }
     ht_param$post_fun <- post_fun
