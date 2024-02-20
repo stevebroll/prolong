@@ -79,33 +79,20 @@
 #' \insertRef{glmnet}{prolong}
 #' \insertRef{lasso}{prolong}
 #'
-prolong <-
-  function(x,
-           y,
-           lambda1 = NULL,
-           lambda2 = NULL,
-           lambdar = NULL,
-           groups = TRUE,
-           foldids = NULL,
-           optimvals = c(1, 0.01)) {
+prolong <- function(x, y, lambda1 = NULL, lambda2 = NULL, lambdar = NULL, groups = TRUE, foldids = NULL, optimvals = c(1, 0.01)) {
     if (nrow(y) != nrow(x)) {
-      stop("Incompatible dimensions for X and Y, X and Y should have same #
+        stop("Incompatible dimensions for X and Y, X and Y should have same #
            rows, 1 for each sample")
     }
     if (ncol(y) != dim(x)[3]) {
-      stop(
-        "Incompatible dimensions for X and Y, Y should have t columns the third
-        component of dim(X) should also be t"
-      )
+        stop("Incompatible dimensions for X and Y, Y should have t columns the third
+        component of dim(X) should also be t")
     }
     if (is.null(groups) | isFALSE(groups)) {
-      message("No groups supplied or suggested, ordinary lasso will be used instead of group lasso")
+        message("No groups supplied or suggested, ordinary lasso will be used instead of group lasso")
     }
-    if (!is.null(groups) &
-      !identical(groups, sort(groups))) {
-      stop(
-        "Groups must consist of consecutive columns, with group numbers counting from 1 to # groups"
-      )
+    if (!is.null(groups) & !identical(groups, sort(groups))) {
+        stop("Groups must consist of consecutive columns, with group numbers counting from 1 to # groups")
     }
     n <- nrow(x)
     p <- ncol(x)
@@ -114,124 +101,83 @@ prolong <-
     DXout <- get_delta_x(x, n, p, t)
     DY <- get_delta_y(y, n, t)
     cormat <- get_cor_matrix(DXout$DXarray, n, p, t)
-    graph <-
-      igraph::graph_from_adjacency_matrix(cormat,
-        mode = "undirected",
-        weighted = T,
-        diag = F
-      )
-    lap <-
-      as.matrix(igraph::laplacian_matrix(graph, normalized = T))
+    graph <- igraph::graph_from_adjacency_matrix(cormat, mode = "undirected", weighted = T, diag = F)
+    lap <- as.matrix(igraph::laplacian_matrix(graph, normalized = T))
 
     # Optimization for l2
     if (is.null(lambda2) | is.null(lambdar)) {
-      message("lambda2 and/or lambdar missing, optimizing over both")
-      ZTZ <- crossprod(DXout$DX)
-      ZTY <- crossprod(DXout$DX, DY)
-      YTZ <- crossprod(DY, DXout$DX)
-      dn <- nrow(DXout$DX)
-      solvechol <- function(x) {
-        Matrix::chol2inv(Matrix::chol(x))
-      }
-      minfun <- function(l) {
-        l - abs(l)
-        B <- l[1] * as.matrix(lap) + diag(l[2], nrow(lap))
-        dn * log(crossprod(DY, DY) - YTZ %*% solvechol(B + ZTZ) %*% ZTY) +
-          log(abs(det(B + ZTZ))) -
-          log(abs(det(B)))
-      }
-      opt <- stats::optim(optimvals, minfun)
-      lambda2 <- opt$par[1]
-      lambdar <- opt$par[2]
-      cat(paste("lambda2 = ", lambda2, "\nlambdar = ", lambdar, sep = ""))
+        message("lambda2 and/or lambdar missing, optimizing over both")
+        ZTZ <- crossprod(DXout$DX)
+        ZTY <- crossprod(DXout$DX, DY)
+        YTZ <- crossprod(DY, DXout$DX)
+        dn <- nrow(DXout$DX)
+        solvechol <- function(x) {
+            Matrix::chol2inv(Matrix::chol(x))
+        }
+        minfun <- function(l) {
+            l - abs(l)
+            B <- l[1] * as.matrix(lap) + diag(l[2], nrow(lap))
+            dn * log(crossprod(DY, DY) - YTZ %*% solvechol(B + ZTZ) %*% ZTY) + log(abs(det(B + ZTZ))) - log(abs(det(B)))
+        }
+        opt <- stats::optim(optimvals, minfun)
+        lambda2 <- opt$par[1]
+        lambdar <- opt$par[2]
+        cat(paste("lambda2 = ", lambda2, "\nlambdar = ", lambdar, sep = ""))
     }
 
     # get incidence matrix
     LDL <- fastmatrix::ldl(lap + diag(lambdar, nrow = nrow(lap)))
     incidence <- LDL$lower %*% diag(sqrt(abs(LDL$d)))
 
-    tri <- t * (t - 1) / 2
-    Xaug <-
-      (1 / sqrt(1 + lambda2)) * rbind(DXout$DX, sqrt(lambda2) * t(incidence))
+    tri <- t * (t - 1)/2
+    Xaug <- (1/sqrt(1 + lambda2)) * rbind(DXout$DX, sqrt(lambda2) * t(incidence))
     colnames(Xaug) <- rep(colnames(DXout$DXarray), tri)
-    Xaug <-
-      Xaug[, rep((1:p), each = tri) + rep(seq(0, p * (tri - 1), p), p)]
+    Xaug <- Xaug[, rep((1:p), each = tri) + rep(seq(0, p * (tri - 1), p), p)]
     Yaug <- c(DY, rep(0, nrow(Xaug) - (t - 1) * n))
 
     if (!is.null(foldids)) {
-      foldids <- rep(foldids, (t - 1))
+        foldids <- rep(foldids, (t - 1))
     } else {
-      foldids <- c(rep(caret::createFolds(1:n, 5, list = F), (t - 1)))
+        foldids <- c(rep(caret::createFolds(1:n, 5, list = F), (t - 1)))
     }
 
     if (is.null(groups) | isFALSE(groups)) {
-      if (is.null(lambda1)) {
-        cv <- cv.glmnet_prolong(
-          Xaug,
-          Yaug,
-          foldid = foldids
-        )
-        lambda1 <- cv$lambda.1se
-      } else {
-        lambda1 <- lambda1
-      }
-      llmod <- glmnet::glmnet(
-        Xaug,
-        Yaug,
-        intercept = F,
-        lambda = lambda1
-      )
-      coefs <- stats::coef(llmod)[-1, ]
-      coefs <- coefs / (sqrt(1 + lambda2))
-      npasses <- llmod$npasses
-      jerr <- llmod$jerr
-      call <- llmod$call
+        if (is.null(lambda1)) {
+            cv <- cv.glmnet_prolong(Xaug, Yaug, foldid = foldids)
+            lambda1 <- cv$lambda.1se
+        } else {
+            lambda1 <- lambda1
+        }
+        llmod <- glmnet::glmnet(Xaug, Yaug, intercept = F, lambda = lambda1)
+        coefs <- stats::coef(llmod)[-1, ]
+        coefs <- coefs/(sqrt(1 + lambda2))
+        npasses <- llmod$npasses
+        jerr <- llmod$jerr
+        call <- llmod$call
     } else {
-      if (isTRUE(groups)) {
-        groups <- rep(1:p, each = tri)
-      }
-      if (is.null(lambda1)) {
-        cv <- cv.gglasso_prolong(
-          Xaug,
-          Yaug,
-          group = groups,
-          foldid = foldids
-        )
-        lambda1 <- cv$lambda.1se
-      } else {
-        lambda1 <- lambda1
-      }
-      gllmod <- gglasso::gglasso(
-        Xaug,
-        Yaug,
-        intercept = F,
-        group = groups,
-        lambda = lambda1
-      )
-      coefs <- stats::coef(gllmod)[-1, ]
-      coefs <- coefs / (sqrt(1 + lambda2))
-      npasses <- gllmod$npasses
-      jerr <- gllmod$jerr
-      call <- gllmod$call
+        if (isTRUE(groups)) {
+            groups <- rep(1:p, each = tri)
+        }
+        if (is.null(lambda1)) {
+            cv <- cv.gglasso_prolong(Xaug, Yaug, group = groups, foldid = foldids)
+            lambda1 <- cv$lambda.1se
+        } else {
+            lambda1 <- lambda1
+        }
+        gllmod <- gglasso::gglasso(Xaug, Yaug, intercept = F, group = groups, lambda = lambda1)
+        coefs <- stats::coef(gllmod)[-1, ]
+        coefs <- coefs/(sqrt(1 + lambda2))
+        npasses <- gllmod$npasses
+        jerr <- gllmod$jerr
+        call <- gllmod$call
     }
 
     names(coefs) <- colnames(Xaug)
     df <- length(which(coefs != 0))
     selected <- unique(names(coefs)[which(coefs != 0)])
-    output <- list(
-      "beta" = as.matrix(coefs),
-      "selected" = selected,
-      "df" = df,
-      "dim" = c(p, length(lambda1)),
-      "lambda1" = lambda1,
-      "lambda2" = lambda2,
-      "lambdar" = lambdar,
-      "npasses" = npasses,
-      "jerr" = jerr,
-      "group" = groups,
-      "call" = call
-    )
+    output <- list(beta = as.matrix(coefs), selected = selected, df = df, dim = c(p, length(lambda1)), lambda1 = lambda1, lambda2 = lambda2, lambdar = lambdar,
+        npasses = npasses, jerr = jerr, group = groups, call = call)
     class(output) <- c("prolong", class(output))
 
     return(output)
-  }
+}
