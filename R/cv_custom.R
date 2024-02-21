@@ -1,3 +1,9 @@
+# Cholesky inverse for lambda2 optimization
+solvechol <- function(x) {
+  Matrix::chol2inv(Matrix::chol(x))
+}
+
+
 # unexported gglasso functions
 
 cv.ls <- function(outlist, lambda, x, y, foldid, pred.loss, delta) {

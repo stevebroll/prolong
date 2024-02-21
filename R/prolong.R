@@ -113,11 +113,8 @@ prolong <- function(x, y, lambda1 = NULL, lambda2 = NULL, lambdar = NULL, groups
         ZTY <- crossprod(DXout$DX, DY)
         YTZ <- crossprod(DY, DXout$DX)
         dn <- nrow(DXout$DX)
-        solvechol <- function(x) {
-            Matrix::chol2inv(Matrix::chol(x))
-        }
         minfun <- function(l) {
-            l - abs(l)
+            l = abs(l)
             B <- l[1] * as.matrix(lap) + diag(l[2], nrow(lap))
             dn * log(crossprod(DY, DY) - YTZ %*% solvechol(B + ZTZ) %*% ZTY) + log(abs(det(B +
                 ZTZ))) - log(abs(det(B)))

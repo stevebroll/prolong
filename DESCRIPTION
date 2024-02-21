@@ -10,6 +10,7 @@ Encoding: UTF-8
 LazyData: false
 biocViews:
 Imports: 
+    Matrix,
     caret,
     fastmatrix,
     gglasso,
