@@ -1,8 +1,15 @@
 # Cholesky inverse for lambda2 optimization
 solvechol <- function(x) {
-  Matrix::chol2inv(Matrix::chol(x))
+    Matrix::chol2inv(Matrix::chol(x))
 }
 
+# Minimization function for lambda2
+minfun <- function(l) {
+    l = abs(l)
+    B <- l[1] * as.matrix(lap) + diag(l[2], nrow(lap))
+    dn * log(crossprod(DY, DY) - YTZ %*% solvechol(B + ZTZ) %*% ZTY) + log(abs(det(B +
+        ZTZ))) - log(abs(det(B)))
+}
 
 # unexported gglasso functions
 
