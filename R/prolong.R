@@ -113,7 +113,7 @@ prolong <- function(x, y, lambda1 = NULL, lambda2 = NULL, lambdar = NULL, groups
         ZTY <- crossprod(DXout$DX, DY)
         YTZ <- crossprod(DY, DXout$DX)
         dn <- nrow(DXout$DX)
-        opt <- stats::optim(optimvals, minfun)
+        opt <- stats::optim(par = optimvals, fn = minfun, gr = NULL, lap, dn, DY, YTZ, ZTZ, ZTY)
         lambda2 <- opt$par[1]
         lambdar <- opt$par[2]
         cat(paste("lambda2 = ", lambda2, "\nlambdar = ", lambdar, sep = ""))

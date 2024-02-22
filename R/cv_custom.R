@@ -4,7 +4,7 @@ solvechol <- function(x) {
 }
 
 # Minimization function for lambda2
-minfun <- function(l) {
+minfun <- function(l, lap, dn, DY, YTZ, ZTZ, ZTY) {
     l = abs(l)
     B <- l[1] * as.matrix(lap) + diag(l[2], nrow(lap))
     dn * log(crossprod(DY, DY) - YTZ %*% solvechol(B + ZTZ) %*% ZTY) + log(abs(det(B +
