@@ -39,7 +39,7 @@ lasso + laplacian penalty used.
 \examples{
 \dontrun{
 delta_heatmap(Xarray)
-delta_heatmap(Xarray, timediff = "4-2", interactive = F, grayscale = T)
+delta_heatmap(Xarray, timediff = '4-2', interactive = F, grayscale = T)
 }
 
 }

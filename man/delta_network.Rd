@@ -24,7 +24,7 @@ delta_network(
 
 \item{interactive}{If \code{TRUE}, an interactive \code{visNetwork} plot will open in the Viewer panel. If \code{FALSE}, a static \code{igraph} plot will be produced}
 
-\item{method}{A character string indicating which correlation coefficient is to be computed, with "pearson" as default}
+\item{method}{A character string indicating which correlation coefficient is to be computed, with 'pearson' as default}
 }
 \value{
 Either an interactive \code{visNetwork} or static \code{igraph} plot
@@ -35,6 +35,6 @@ Experimental Network Plots for Delta-Scale Pairwise (Partial) Correlations
 \examples{
 \dontrun{
 delta_network(Xarray)
-delta_network(Xarray, timediff = "4-2", corr_thresh = .9, method = "spearman")
+delta_network(Xarray, timediff = '4-2', corr_thresh = .9, method = 'spearman')
 }
 }

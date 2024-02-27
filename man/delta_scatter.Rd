@@ -38,8 +38,8 @@ Experimental 2D and 3D Scatter Plots for Delta-Scale Pairwise Correlations
 \examples{
 \dontrun{
 delta_scatter(Xarray)
-delta_scatter(Xarray, timediff3 = "4-3")
-delta_scatter(Xarray, timediff1 = "3-1", timediff2 = "5-3", timediff3 = "7-5")
+delta_scatter(Xarray, timediff3 = '4-3')
+delta_scatter(Xarray, timediff1 = '3-1', timediff2 = '5-3', timediff3 = '7-5')
 }
 
 }
