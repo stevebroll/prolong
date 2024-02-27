@@ -112,14 +112,16 @@ prolong <- function(x, y, lambda1 = NULL, lambda2 = NULL, lambdar = NULL, groups
         ZTZ <- crossprod(DXout$DX)
         ZTY <- crossprod(DXout$DX, DY)
         YTZ <- crossprod(DY, DXout$DX)
+        YTY <- crossprod(DY)
         dn <- nrow(DXout$DX)
-        opt <- stats::optim(par = optimvals, fn = minfun, gr = NULL, lap, dn, DY, YTZ, ZTZ, ZTY)
+        opt <- stats::optim(par = optimvals, fn = minfun, lap = lap, dn = dn, YTY = YTY,
+            YTZ = YTZ, ZTZ = ZTZ, ZTY = ZTY)
         lambda2 <- opt$par[1]
         lambdar <- opt$par[2]
         cat(paste("lambda2 = ", lambda2, "\nlambdar = ", lambdar, sep = ""))
     }
 
-    # get incidence matrix
+    # get incidfence matrix
     LDL <- fastmatrix::ldl(lap + diag(lambdar, nrow = nrow(lap)))
     incidence <- LDL$lower %*% diag(sqrt(abs(LDL$d)))
 

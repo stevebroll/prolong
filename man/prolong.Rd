@@ -20,17 +20,17 @@ prolong(
 
 \item{y}{Input response matrix, with n rows and t columns}
 
-\item{lambda1}{Lasso/group lasso parameter, if left \code{NULL} this parameter
+\item{lambda1}{Lasso/group lasso parameter, if left as \code{NULL} this parameter
 will be chosen via a cross-validation that keeps each subject's observations
 across time points together. It is recommended to save the lambda2 and
 lambdar values from the first run of prolong for future runs, since the
 optimization step takes the longest}
 
-\item{lambda2}{Laplacian penalty parameter, if left \code{NULL} will be chosen along
+\item{lambda2}{Laplacian penalty parameter, if left as\code{NULL} will be chosen along
 with lambdar via MLE, see supplementary material in
 \insertCite{spatial-connectivity}{prolong}}
 
-\item{lambdar}{Nuisance parameter, if left \code{NULL} will be chosen along with
+\item{lambdar}{Nuisance parameter, if left as \code{NULL} will be chosen along with
 lambdar via MLE. Added to the the diagonal elements of the laplacian matrix
 to get the invertibility required for the MLE}
 
@@ -39,7 +39,7 @@ used. If left as \code{TRUE}, then there will be p groups each containing the
 observations across time points}
 
 \item{foldids}{Optional pre-specified foldids for the cv. Should be of length
-n. If left \code{NULL}, subjects will be automatically split into 5 folds}
+n. If left as \code{NULL}, subjects will be automatically split into 5 folds}
 
 \item{optimvals}{Initial values of lambda2 and lambdar to be used by
 \code{optim()} for the MLE of lambda2 and lambdar}
