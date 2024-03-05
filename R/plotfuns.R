@@ -202,11 +202,11 @@ delta_scatter <- function(x, timediff1 = "2-1", timediff2 = "3-2", timediff3 = N
         name1 <- colnames(rmat)[1]
         name2 <- colnames(rmat)[2]
         p <- ggplot2::ggplot(data = rmat, ggplot2::aes(x = get(name1), y = get(name2),
-            text = c(paste("Variable 1:", rmat[, 3], "\nVariable 2:", rmat[, 4])))) +
+            text = c(paste(timediff1, ' Corr: ', rmat[, 1], '\n', timediff2,' Corr: ', rmat[,2],"\nVariable 1: ", rmat[, 3], "\nVariable 2: ", rmat[, 4] , sep ='')))) +
             ggplot2::geom_point(size = 0.5) + ggplot2::xlab(name1) + ggplot2::ylab(name2)
         if (interactive) {
             # p <- p %>% plotly::toWebGL()
-            plotly::ggplotly(p) %>%
+            plotly::ggplotly(p, tooltip = 'text') %>%
                 plotly::layout(hoverlabel = list(align = "left")) %>%
                 plotly::partial_bundle()
         } else {
@@ -246,6 +246,8 @@ delta_scatter <- function(x, timediff1 = "2-1", timediff2 = "3-2", timediff3 = N
                   timediff3, " Corr: %{z}<br>", "%{text}", "<extra></extra>", sep = ""),
                 text = c(paste("Variable 1:", rmat[, 4], "\nVariable 2:", rmat[,
                   5])))
+            p <- p %>%
+                plotly::layout(scene = list(xaxis = list(title = name[1]), yaxis = list(title = name[2]), zaxis = list(title = name[3])))
             p <- p %>%
                 plotly::add_markers(size = 1)
             p <- p %>%
