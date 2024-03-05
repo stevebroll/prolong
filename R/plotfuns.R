@@ -295,7 +295,7 @@ delta_network <- function(x, timediff = "2-1", partial = TRUE, corr_thresh = 0.7
     colnames(rr1) <- rownames(rr1) <- colnames(x)
     diag(rr1) <- 0
     rr1[which(rr1 < corr_thresh)] <- 0
-    g1 <- igraph::graph_from_adjacency_matrix(rr1, mode = "undirected", weighted = TRUE)
+    g1 <- igraph::graph_from_adjacency_matrix(rr1, mode = "max", weighted = TRUE)
     igraph::V(g1)$name <- colnames(x)
     g1 <- igraph::delete.vertices(g1, which(igraph::degree(g1) == 0))
     if (interactive) {
