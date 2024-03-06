@@ -121,7 +121,7 @@ prolong <- function(x, y, lambda1 = NULL, lambda2 = NULL, lambdar = NULL, groups
         cat(paste("lambda2 = ", lambda2, "\nlambdar = ", lambdar, sep = ""))
     }
 
-    # get incidfence matrix
+    # get incidence matrix
     LDL <- fastmatrix::ldl(lap + diag(lambdar, nrow = nrow(lap)))
     incidence <- LDL$lower %*% diag(sqrt(abs(LDL$d)))
 
