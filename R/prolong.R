@@ -116,8 +116,8 @@ prolong <- function(x, y, lambda1 = NULL, lambda2 = NULL, lambdar = NULL, groups
         dn <- nrow(DXout$DX)
         opt <- stats::optim(par = optimvals, fn = minfun, lap = lap, dn = dn, YTY = YTY,
             YTZ = YTZ, ZTZ = ZTZ, ZTY = ZTY)
-        lambda2 <- opt$par[1]
-        lambdar <- opt$par[2]
+        lambda2 <- abs(opt$par[1])
+        lambdar <- abs(opt$par[2])
         cat(paste("lambda2 = ", lambda2, "\nlambdar = ", lambdar, sep = ""))
     }
 
