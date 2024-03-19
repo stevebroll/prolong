@@ -24,7 +24,7 @@
 #' across time points together. It is recommended to save the lambda2 and
 #' lambdar values from the first run of prolong for future runs, since the
 #' optimization step takes the longest
-#' @param lambda2 Laplacian penalty parameter, if left as`NULL` will be chosen along
+#' @param lambda2 Laplacian penalty parameter, if left as `NULL` will be chosen along
 #'  with lambdar via MLE, see supplementary material in
 #'  \insertCite{spatial-connectivity}{prolong}
 #' @param lambdar Nuisance parameter, if left as `NULL` will be chosen along with
@@ -42,7 +42,7 @@
 #'
 #' @return A list object with S3 class `prolong`
 #' \tabular{ll}{
-#' \code{beta} \tab `p*length(lambda1)` matrix of coefficients. Currently, `lambda1` is chosen via cross-validation and is just a single value \cr
+#' \code{beta} \tab `p*t*t-1/2 *length(lambda1)` matrix of coefficients. Currently, `lambda1` is chosen via cross-validation and is just a single value \cr
 #' \code{selected} \tab the names of the variables with at least one non-zero coefficient \cr
 #' \code{df} \tab number of non-zero coefficients (out of `p*t(t-1)/2`, not `p`)\cr
 #' \code{dim} \tab dimension of full coefficient matrix over `lambda1` values. Currently, `lambda1` is chosen via cross-validation and is just a single value \cr

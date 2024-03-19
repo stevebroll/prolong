@@ -26,7 +26,7 @@ across time points together. It is recommended to save the lambda2 and
 lambdar values from the first run of prolong for future runs, since the
 optimization step takes the longest}
 
-\item{lambda2}{Laplacian penalty parameter, if left as\code{NULL} will be chosen along
+\item{lambda2}{Laplacian penalty parameter, if left as \code{NULL} will be chosen along
 with lambdar via MLE, see supplementary material in
 \insertCite{spatial-connectivity}{prolong}}
 
@@ -47,7 +47,7 @@ n. If left as \code{NULL}, subjects will be automatically split into 5 folds}
 \value{
 A list object with S3 class \code{prolong}
 \tabular{ll}{
-\code{beta} \tab \code{p*length(lambda1)} matrix of coefficients. Currently, \code{lambda1} is chosen via cross-validation and is just a single value \cr
+\code{beta} \tab \code{p*t*t-1/2 *length(lambda1)} matrix of coefficients. Currently, \code{lambda1} is chosen via cross-validation and is just a single value \cr
 \code{selected} \tab the names of the variables with at least one non-zero coefficient \cr
 \code{df} \tab number of non-zero coefficients (out of \code{p*t(t-1)/2}, not \code{p})\cr
 \code{dim} \tab dimension of full coefficient matrix over \code{lambda1} values. Currently, \code{lambda1} is chosen via cross-validation and is just a single value \cr
